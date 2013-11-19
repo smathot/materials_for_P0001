@@ -1,0 +1,115 @@
+* {
+	font-family: "Arial";
+	font-size: 12pt;
+	line-height: 200%;
+	text-align: justify;
+	color: #2e3436;
+}
+
+p {
+	/** margin: 0px; **/
+}
+
+a {
+	color: #3465a4;
+	text-decoration: none;
+}
+
+a, em, strong {
+	font-size: 1em;	
+	font-family: inherit;
+}
+
+em, strong {
+	color: inherit;
+}
+
+code {
+	font-family: 'Courier New';
+}
+
+sup {
+	font-size: 0.7em;
+}
+
+h1 {
+	text-align: left;
+	font-size: 1.2em;
+	font-weight: bold;
+	color: #3465a4;
+}
+
+h1, h2, h2 {
+	page-break-after: avoid;
+}
+
+#titlepage {
+	margin-bottom: 50px;
+}
+
+.title {	
+	font-size: 1.5em;
+	text-align: left;
+	color: #3465a4;
+	margin-bottom: 50px;
+	font-weight: bold;
+}
+
+.author {
+	font-size: 1.0em;
+	text-align: right;
+}
+
+.affiliation,
+.correspondence {
+	font-size: 0.8em;
+	text-align: right;
+}
+
+#abstract {
+	border-bottom: solid 1px #729fcf;
+	padding-bottom: 25px;
+	margin: 25px;
+}
+
+#abstract strong,
+figcaption strong {
+	color: #3465a4;
+}
+
+figure {
+	display: table;
+	margin-bottom: 25px;
+	page-break-inside: avoid;
+	caption-side: bottom;
+	width: 100%;
+}
+
+figure img {
+}
+
+figure figcaption {
+	display: table-caption;
+	font-style: italic;
+	font-size: 0.9em;
+	width: 100%;
+}
+
+.citation {
+	color: #3465a4;
+}
+
+.references p {
+	text-align: left;
+	text-indent: -25px;
+	margin-left: 25px;
+}
+
+.footer, .header {
+	text-align: right;
+	font-size: 0.8em;
+}
+
+.footer span, .header span {
+	font-size: 1em;
+}
