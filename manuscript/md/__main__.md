@@ -2,10 +2,7 @@
 title:
  "The pupillary light response reflects eye-movement preparation"
 author:
-  Sebastiaan Mathôt
-  Lotje van der Linden
-  Jonathan Grainger
-  Françoise Vitu
+  Sebastiaan Mathôt, Lotje van der Linden, Jonathan Grainger, and Françoise Vitu
 affiliation: "Aix-Marseille Université, CNRS, Laboratoire de Psychologie Cognitive"
 correspondence: "Correspondence should be addressed to <s.mathot@cogsci.nl>"
 ---
