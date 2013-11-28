@@ -1,17 +1,15 @@
 * {
 	font-family: "Arial";
-	font-size: 12pt;
+	font-size: 10.5pt;
 	line-height: 200%;
 	text-align: justify;
-	color: #2e3436;
 }
 
 p {
-	/** margin: 0px; **/
 }
 
 a {
-	color: #3465a4;
+	color: #204a87;
 	text-decoration: none;
 }
 
@@ -36,45 +34,27 @@ h1 {
 	text-align: left;
 	font-size: 1.2em;
 	font-weight: bold;
-	color: #3465a4;
+	color: #204a87;
 }
 
 h1, h2, h2 {
 	page-break-after: avoid;
+}
+h2 {
+	font-weight: normal;
+	font-style: italic;
 }
 
 #titlepage {
 	margin-bottom: 50px;
 }
 
-.title {	
-	font-size: 1.5em;
-	text-align: left;
-	color: #3465a4;
-	margin-bottom: 50px;
-	font-weight: bold;
-}
-
-.author {
-	font-size: 1.0em;
-	text-align: right;
-}
-
-.affiliation,
 .correspondence {
-	font-size: 0.8em;
-	text-align: right;
+	margin-bottom: 50px;
 }
 
-#abstract {
-	border-bottom: solid 1px #729fcf;
-	padding-bottom: 25px;
-	margin: 25px;
-}
-
-#abstract strong,
 figcaption strong {
-	color: #3465a4;
+	color: #204a87;
 }
 
 figure {
@@ -96,7 +76,7 @@ figure figcaption {
 }
 
 .citation {
-	color: #3465a4;
+	color: #204a87;
 }
 
 .references p {

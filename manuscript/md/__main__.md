@@ -1,13 +1,16 @@
 ---
 title:
- "The pre-saccadic pupillary light response: Pupil size changes in anticipation of eye movements"
+ "The pupillary light response reflects eye-movement preparation"
 author:
- "Sebastiaan Mathôt*, Lotje van der Linden, Jonathan Grainger, and Françoise Vitu"
+  Sebastiaan Mathôt
+  Lotje van der Linden
+  Jonathan Grainger
+  Françoise Vitu
 affiliation: "Aix-Marseille Université, CNRS, Laboratoire de Psychologie Cognitive"
-correspondence: "*Correspondence should be addressed to <s.mathot@cogsci.nl>"
-abstract:
- "%-- include: "md/abstract.md" --%"
+correspondence: "Correspondence should be addressed to <s.mathot@cogsci.nl>"
 ---
+
+%-- include: "md/abstract.md" --%
 
 %-- include: "md/introduction.md" --%
 

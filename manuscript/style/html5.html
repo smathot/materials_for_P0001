@@ -32,44 +32,26 @@ $endfor$
 
 <body>
 
-$if(header)$
-<header>
-<h1>$header$</h1>
-</header>
-$endif$
-
-$for(include-before)$
-$include-before$
-$endfor$
 $if(title)$
 <section id="titlepage">
-<div class="title">$title$</div>
-$if(subtitle)$
-<div class="subtitle">$subtitle$</div>
-$endif$
-$for(author)$
-<div class="author">$author$</div>
-$endfor$
-$for(affiliation)$
-<div class="affiliation">$affiliation$</div>
-$endfor$
-$if(date)$
-<div class="date">$date$</div>
-$endif$
-$if(correspondence)$
-<div class="correspondence">$correspondence$</div>
-$endif$
+
+	$if(correspondence)$
+	<p class="correspondence">$correspondence$</p>
+	$endif$
+
+	<h1 class="title">$title$</h1>
+
+	$for(author)$
+	<p class="author">$author$</p>
+	$endfor$
+
+	$for(affiliation)$
+	<p class="affiliation">$affiliation$</p>
+	$endfor$
+
 </section>
 $endif$
-$if(toc)$
-<div id="$idprefix$TOC">
-$toc$
-</div>
-$endif$
 
-$if(abstract)$
-<section id='abstract'><strong>Abstract</strong> $abstract$</section>
-$endif$
 
 $body$
 $for(include-after)$
