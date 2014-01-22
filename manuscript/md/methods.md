@@ -1,28 +1,35 @@
-# Methods
-
 ## Materials and availability
 
-Experimental scripts, participant data, and analysis scripts are available from the first author's website, or from <https://github.com/smathot/data_repository>.
+Experimental scripts, participant data, analysis scripts, and supplementary analyses are available from the first author's website, or from <https://github.com/smathot/data_repository>.
 
 ## Participants and ethics statement
 
-Eight observers (six naive participants and two authors; seven women; age range 20-30 years) participated in the experiment. Participants were recruited through the participant pool of Aix-Marseille Université. All participants provided written informed consent. The experiment was conducted with approval of the local ethics committee of Aix-Marseille Université, and was in accordance with the declaration of Helsinki.
+Eight observers (six naive participants and two authors; seven women; age range 20-30 years) participated in the experiment. Participants were recruited through the participant pool of Aix-Marseille Université. All participants provided written informed consent. The experiment was conducted with approval of the local ethics committee of Aix-Marseille Université, and was in accordance with the 2013 Declaration of Helsinki, except for point 35, which requires public pre-registration of all studies involving human participants [@Wma2013].
 
 ## Software and apparatus
 
 The right eye was recorded with an EyeLink 1000 (SR Research, Mississauga, Canada, ON), a video-based eye tracker sampling at 1000 Hz. Stimuli were presented on a 21" CRT monitor (1024 x 768 px, 100 Hz). Stimulus presentation was controlled with OpenSesame [@MathSchreij2012] using the PsychoPy back-end [@Peirce2007].
 
-## Procedure and stimuli
+## Stimuli, task, and design
 
 Before the experiment, a nine-point eye-tracker calibration was performed. Before each trial, a single-point re-calibration was performed ('drift correction').
 
-Each trial started with the presentation of three dim green dots (14.7 cd/m^2^; 0.1°), presented at the display center and 5.00° degrees to the right and left of the center (see %FigParadigm). Participants were instructed to fixate on the central dot. In the Constant and Swap conditions, the background was divided into a bright (88.5 cd/m^2^) and a dark (0.2 cd/m^2^) half, separated by a central luminance-gradient band (10.0°). In the Onset condition, the background was uniformly gray (20.8 cd/m^2^). After 3 s, a voice saying 'gauche' (left) or 'droite' (right) was played back through a set of desktop speakers, instructing participants to make a saccadic eye movement to the left or right dot. Saccades were detected on-line as the moment at which horizontal gaze position deviated more than 2.9° from the central dot for at least two consecutive gaze samples. (For the analysis we used an off-line detection algorithm, described under [Saccade detection].) As soon as a saccade was detected, one of three things could happen: In the Constant condition, the display did not change at all (%FigParadigm::a); In the Swap condition, the dark side of the screen turned bright and vice versa (%FigParadigm::b); In the Onset condition, the initially gray display was divided into a bright and a dark half (%FigParadigm::c). The trial ended after another 3 s.
+%--
+figure:
+ id: FigParadigm
+ source: FigParadigm.svg
+ caption: Schematic experimental paradigm. a) An example of a Land-on-Dark Constant trial, in which the pupil prepares for, and lands on, a dark target background (i.e. congruent preparation). b) An example of a Land-on-Dark Swap trial, in which the pupil prepares for brightness, but lands on darkness (i.e. incongruent preparation). c) An example of a Land-on-Dark Onset trial, in which the pupil prepares for no luminance change, but lands on darkness (i.e. no preparation). The display change occurred as soon as the onset of a saccade was detected.
+--%
 
-Phrased differently, we used a fully crossed 2 x 3 design. The first factor was Landing Luminance (Land on Bright or Land on Dark), corresponding to the luminance of the target region after the saccade. The second factor was Condition (Constant, Swap, or Onset), as described above. For example, on a Land-on-Dark Constant trial, a saccade was prepared towards the dark side of the display, which did not change after the saccade (%FigParadigm::a). On a Land-on-Bright Swap trial, a saccade was prepared towards the dark side of the screen, which turned bright on saccade detection (%FigParadigm::b). Finally, on a Land-on-Bright Onset trial, a saccade was prepared towards a gray area, which turned dark on saccade detection (%FigParadigm::c). Saccade direction (Left or Right) was fully randomized and not entered as a factor into the design.
+Each trial started with the presentation of three dim green dots (14.7 cd/m^2^; 0.1°), presented at the display center and 5.00° degrees to the right and left of the center (see %FigParadigm). Participants were instructed to fixate on the central dot. In the Constant and Swap conditions, the background was divided into a bright (88.5 cd/m^2^) and a dark (0.2 cd/m^2^) half, separated by a central luminance-gradient band (10.0° wide). In the Onset condition, the background was uniformly gray (20.8 cd/m^2^). After 3 s, a voice saying *gauche* (left) or *droite* (right) was played back through a set of desktop speakers, instructing participants to make a saccade to the left or right dot. Saccades were detected on-line as the moment at which horizontal gaze position deviated more than 2.9° from the central dot for at least two consecutive gaze samples. (For the analysis we used an off-line detection algorithm, described under [Saccade detection].)
+
+As soon as a saccade was detected, one of three things could happen. In the Constant condition, the display did not change at all (%FigParadigm::a). Therefore, pre-saccadic preparation of the PLR should result in a reduction of the PLR's latency. In the Swap condition, the dark side of the screen turned bright and vice versa (%FigParadigm::b). Therefore, pre-saccadic preparation should result in a brief 'inverse' PLR, which reflects the PLR's preparatory component. In the Onset condition, the gray display was divided into a bright and a dark half (%FigParadigm::c). In this condition, there could be no pre-saccadic preparation of the PLR, because both the initial fixation point and the saccade target were (initially) on a gray background. The trial ended 3 s after the saccade was detected.
+
+In sum, we used a fully crossed 2 x 3 design. The first factor, Landing Luminance (Land on Bright or Land on Dark), corresponded to the luminance of the target region after the saccade. The second factor was Condition (Constant, Swap, or Onset), as described above. Both factors were randomly mixed within blocks. Saccade direction (Left or Right) was fully randomized. The experiment consisted of 360 trials across 10 blocks, and lasted approximately 75 minutes.
 
 ## Pupil-trace analysis
 
-Each trial was divided into three epochs: The baseline epoch, spanning the 100 ms prior to the presentation of the cue; The pre-saccade epoch, from the cue until the detection of the saccade; And the post-saccade epoch, from the detection of the saccade until the end of the trial. We analyzed pupil surface relative to the mean pupil size during the baseline epoch [cf. @Math2013Plos]. Missing data during blinks was reconstructed, where possible, using cubic-spline interpolation [@Math2013Blinks]. No signal smoothing was applied.
+Each trial was divided into three epochs: the baseline epoch, spanning the 100 ms prior to the presentation of the auditory cue; the pre-saccade epoch, from the cue until the detection of the saccade; and the post-saccade epoch, from the detection of the saccade until the end of the trial. We analyzed pupil surface relative to the mean pupil size during the baseline epoch [cf. @Mathôt2013Plos]. Missing data during blinks was reconstructed, where possible, using cubic-spline interpolation [@Math2013Blinks]. No signal smoothing was applied.
 
 ## Trial-exclusion criteria
 
@@ -30,4 +37,6 @@ Trials were excluded based on the following criteria: A saccade was executed in 
 
 ## Saccade detection
 
-For the purpose of the analysis, we used the EyeLink saccade detection algorithm with the default parameters (velocity threshold: 35 °/s; acceleration threshold: 9500 °/s2) and the additional constraint that we considered only the first saccade that was larger than 1.8°. Saccades were executed on average 543.6 ms (SD = 187.4) after the cue. We did not provide any instructions regarding speed, and consequently there was considerable variability in saccadic response time between participants, ranging from 409 ms to 789 ms (participant means). After the display change had occurred, a trigger was sent to the eye tracker to allow off-line verification of timing. This showed that the display change occurred exactly in the middle of the saccade, 27.09 ms (SD = 3.906) after saccade onset and 27.55 ms (SD = 7.852) before saccade offset. The average saccade duration was 54.63 ms (SD = 7.407).
+For the analysis, we used the EyeLink saccade detection algorithm (velocity threshold: 35 °/s; acceleration threshold: 9500 °/s2). For each trial, we considered the first saccade that was larger than 1.8°. Saccades were executed on average 543.6 ms (SD = 187.4) after the cue, with considerable variation between participants (409 - 289 ms; participant means). The fact that saccade latencies were relatively high is presumably due to the instruction's emphasis on accuracy, the low saliency of the saccade target, and the use of an endogenous auditory cue.
+
+After the display change had occurred, a trigger was sent to the eye tracker to allow off-line verification of timing. This showed that the display change occurred exactly in the middle of the saccade, 27.09 ms (SD = 3.906) after saccade onset and 27.55 ms (SD = 7.852) before saccade offset. The average saccade duration was 54.63 ms (SD = 7.407). All trials in which the display change did not occur during the saccade were discarded (see also [Trial-exclusion criteria]).

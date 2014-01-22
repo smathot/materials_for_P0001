@@ -46,13 +46,13 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:zoom="1.5831335"
-     inkscape:cx="379.47368"
-     inkscape:cy="57.753397"
+     inkscape:zoom="2.2388889"
+     inkscape:cx="241.25668"
+     inkscape:cy="93.035589"
      inkscape:window-x="1198"
      inkscape:window-y="547"
      inkscape:window-maximized="1"
-     inkscape:current-layer="figure_1">
+     inkscape:current-layer="axes_1">
     <inkscape:grid
        type="xygrid"
        id="grid4055"
@@ -76,6 +76,19 @@
      id="figure_1"
      style="stroke-linecap:square;stroke-linejoin:round"
      transform="translate(-38.615235,-21.1)">
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:FreeMono;-inkscape-font-specification:FreeMono"
+       x="-155.3877"
+       y="45.895508"
+       id="text3625"
+       sodipodi:linespacing="125%"
+       transform="matrix(0,-1,1,0,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan3627"
+         x="-155.3877"
+         y="45.895508"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:Arial">Pupil-size diff. (norm)</tspan></text>
     <g
        id="axes_1"
        style="stroke-linecap:square;stroke-linejoin:round">
@@ -94,7 +107,7 @@
         <path
            clip-path="url(#p32adf905cb)"
            d="m 72,56.16 148.8,0"
-           style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:1, 3;stroke-dashoffset:0"
+           style="fill:none;stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:1, 3;stroke-dashoffset:0"
            id="path17"
            inkscape:connector-curvature="0" />
       </g>
@@ -134,7 +147,7 @@
         <path
            clip-path="url(#p32adf905cb)"
            d="m 72,56.16 148.8,0"
-           style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:1, 3;stroke-dashoffset:0"
+           style="fill:none;stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:1, 3;stroke-dashoffset:0"
            id="path29"
            inkscape:connector-curvature="0" />
       </g>
@@ -189,7 +202,7 @@
                id="g46"
                style="stroke-linecap:square;stroke-linejoin:round">
               <use
-                 style="stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round"
+                 style="stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round"
                  x="72"
                  xlink:href="#mcb557df647"
                  y="194.39999"
@@ -213,7 +226,7 @@
                id="g54"
                style="stroke-linecap:square;stroke-linejoin:round">
               <use
-                 style="stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round"
+                 style="stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round"
                  x="72"
                  xlink:href="#mdad270ee8e"
                  y="21.6"
@@ -259,7 +272,7 @@
                id="g68"
                style="stroke-linecap:square;stroke-linejoin:round">
               <use
-                 style="stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round"
+                 style="stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round"
                  x="109.2"
                  xlink:href="#mcb557df647"
                  y="194.39999"
@@ -275,7 +288,7 @@
                id="g73"
                style="stroke-linecap:square;stroke-linejoin:round">
               <use
-                 style="stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round"
+                 style="stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round"
                  x="109.2"
                  xlink:href="#mdad270ee8e"
                  y="21.6"
@@ -337,7 +350,7 @@
                id="g91"
                style="stroke-linecap:square;stroke-linejoin:round">
               <use
-                 style="stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round"
+                 style="stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round"
                  x="146.39999"
                  xlink:href="#mcb557df647"
                  y="194.39999"
@@ -353,7 +366,7 @@
                id="g96"
                style="stroke-linecap:square;stroke-linejoin:round">
               <use
-                 style="stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round"
+                 style="stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round"
                  x="146.39999"
                  xlink:href="#mdad270ee8e"
                  y="21.6"
@@ -423,7 +436,7 @@
                id="g116"
                style="stroke-linecap:square;stroke-linejoin:round">
               <use
-                 style="stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round"
+                 style="stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round"
                  x="183.60001"
                  xlink:href="#mcb557df647"
                  y="194.39999"
@@ -439,7 +452,7 @@
                id="g121"
                style="stroke-linecap:square;stroke-linejoin:round">
               <use
-                 style="stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round"
+                 style="stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round"
                  x="183.60001"
                  xlink:href="#mdad270ee8e"
                  y="21.6"
@@ -513,7 +526,7 @@
                id="g142"
                style="stroke-linecap:square;stroke-linejoin:round">
               <use
-                 style="stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round"
+                 style="stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round"
                  x="72"
                  xlink:href="#mc8fcea1516"
                  y="56.16"
@@ -537,7 +550,7 @@
                id="g150"
                style="stroke-linecap:square;stroke-linejoin:round">
               <use
-                 style="stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round"
+                 style="stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round"
                  x="220.8"
                  xlink:href="#m0d5b0a6425"
                  y="56.16"
@@ -599,7 +612,7 @@
                id="g168"
                style="stroke-linecap:square;stroke-linejoin:round">
               <use
-                 style="stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round"
+                 style="stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round"
                  x="72"
                  xlink:href="#mc8fcea1516"
                  y="90.720001"
@@ -615,7 +628,7 @@
                id="g173"
                style="stroke-linecap:square;stroke-linejoin:round">
               <use
-                 style="stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round"
+                 style="stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round"
                  x="220.8"
                  xlink:href="#m0d5b0a6425"
                  y="90.720001"
@@ -685,7 +698,7 @@
                id="g193"
                style="stroke-linecap:square;stroke-linejoin:round">
               <use
-                 style="stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round"
+                 style="stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round"
                  x="72"
                  xlink:href="#mc8fcea1516"
                  y="125.28"
@@ -701,7 +714,7 @@
                id="g198"
                style="stroke-linecap:square;stroke-linejoin:round">
               <use
-                 style="stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round"
+                 style="stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round"
                  x="220.8"
                  xlink:href="#m0d5b0a6425"
                  y="125.28"
@@ -771,7 +784,7 @@
                id="g218"
                style="stroke-linecap:square;stroke-linejoin:round">
               <use
-                 style="stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round"
+                 style="stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round"
                  x="72"
                  xlink:href="#mc8fcea1516"
                  y="159.84"
@@ -787,7 +800,7 @@
                id="g223"
                style="stroke-linecap:square;stroke-linejoin:round">
               <use
-                 style="stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round"
+                 style="stroke:#000000;stroke-width:0.50000000000000000;stroke-linecap:butt;stroke-linejoin:round"
                  x="220.8"
                  xlink:href="#m0d5b0a6425"
                  y="159.84"
@@ -1100,42 +1113,6 @@
              width="576"
              height="216" />
         </g>
-      </g>
-      <g
-         id="legend_1"
-         transform="translate(15.665135,36.221161)"
-         style="stroke-linecap:square;stroke-linejoin:round">
-        <g
-           id="line2d_26"
-           style="stroke-linecap:square;stroke-linejoin:round" />
-        <g
-           id="line2d_28"
-           style="stroke-linecap:square;stroke-linejoin:round" />
-        <g
-           id="text_11"
-           style="stroke-linecap:square;stroke-linejoin:round">
-          <!-- onset -->
-          <defs
-             id="defs341">
-            <path
-               d="m 42.0938,16.7031 9.0781,-1.125 Q 49.0312,7.625 43.2188,3.21875 37.4062,-1.17188 28.375,-1.17188 q -11.375,0 -18.0469,7 -6.67185,7.01568 -6.67185,19.65628 0,13.0937 6.73435,20.3125 6.75,7.2343 17.4844,7.2343 10.4062,0 17,-7.0781 6.5938,-7.0781 6.5938,-19.9219 0,-0.7812 -0.0469,-2.3437 l -38.6719,0 q 0.4844,-8.5469 4.8281,-13.0937 4.3438,-4.5313 10.8438,-4.5313 4.8281,0 8.25,2.53125 3.4219,2.54685 5.4219,8.10935 m -28.8594,14.2031 28.9531,0 q -0.5781,6.5469 -3.3125,9.8126 -4.2031,5.0781 -10.8906,5.0781 -6.0625,0 -10.1875,-4.0469 -4.125,-4.0469 -4.5625,-10.8438"
-               id="ArialMT-65"
-               inkscape:connector-curvature="0"
-               style="stroke-linecap:square;stroke-linejoin:round" />
-          </defs>
-        </g>
-        <text
-           xml:space="preserve"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-           x="-110.91458"
-           y="30.230373"
-           id="text4073"
-           sodipodi:linespacing="125%"
-           transform="matrix(0,-1,1,0,0,0)"><tspan
-             sodipodi:role="line"
-             id="tspan4075"
-             x="-110.91458"
-             y="30.230373">Pupil size (norm.)</tspan></text>
       </g>
     </g>
     <g
@@ -3432,15 +3409,16 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-       x="223.40605"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:FreeMono;-inkscape-font-specification:FreeMono"
+       x="196.98027"
        y="219.20001"
-       id="text4073-3"
+       id="text3621"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         id="tspan4075-3"
-         x="223.40605"
-         y="219.20001">Time after saccade (ms)</tspan></text>
+         id="tspan3623"
+         x="196.98027"
+         y="219.20001"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:Arial">Time relative to display change (ms)</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4e9a06;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
