@@ -8,5 +8,5 @@ Eight healthy human participants fixated a central gray area and made a saccadic
 
 # Conclusions/ significance
 
-Eye movements cause rapid changes in the brightness of visual input. Preparation allows the pupillary response to track these brightness changes, despite being a relatively slow response. With respect to the underlying mechanism, we link our findings to the pre-saccadic shift of attention: The pupil adjusts its size to the brightness of a to-be-fixated stimulus, as soon as attention shifts towards the target of an upcoming saccade. Our findings illustrate that the PLR is a dynamic movement that is tightly linked to visual attention and eye-movement preparation.
+Eye movements cause rapid changes in the brightness of visual input. Through preparation, the pupillary response is able to track these brightness changes in input brightness, despite being a relatively slow response. With respect to the underlying mechanism, we link our findings to the pre-saccadic shift of attention: The pupil adjusts its size to the brightness of a to-be-fixated stimulus, as soon as attention shifts towards the target of an upcoming saccade. Our findings illustrate that the PLR is a dynamic movement that is tightly linked to visual attention and eye-movement preparation.
 
