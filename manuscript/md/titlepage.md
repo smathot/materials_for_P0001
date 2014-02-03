@@ -3,7 +3,7 @@
 - Article type: Brief communication
 - Number of pages: 17
 - Number of figures: 4
-- Word count: %-- wc: abstract.md --% (abstract), %-- wc: introduction.md --% (introduction), %-- wc: discussion.md --% (discussion), 4432 (total)
+- Word count: %-- wc: abstract.md --% (abstract), %-- wc: introduction.md --% (introduction), %-- wc: discussion.md --% (discussion), 4475 (total)
 
 ## Address for correspondence
 
