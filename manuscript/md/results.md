@@ -1,6 +1,6 @@
 ## The PLR is affected by the luminance of the pre-saccadic target background
 
-The main results are shown in %FigMain::a, in which the difference in pupil size between Land-on-Bright and Land-on-Dark trials is plotted over time. The PLR, which is a relative constriction on Land-on-Bight trials and shown as a negativity in the figure, is present in all conditions.
+The main results are shown in %FigMain::a, in which the difference in pupil size between Land-on-Bright and Land-on-Dark trials is plotted over time. The PLR, which is a relative constriction on Land-on-Bright trials and shown as a negativity in the figure, is present in all conditions.
 
 %--
 figure:
@@ -30,7 +30,7 @@ In a pilot study, we compared a number of decay functions and found that, given 
 figure:
  id: FigExp
  source: FigExp.svg
- caption: "The exponential-decay function used to model the difference in pupil-size between Land-on-Bright and Land-on-Dark trials (`p(t)`) as a function of time since display change (`t`). This function has four free parameters: full PLR latency (`t0`), initial pupil-size difference (`p1`), final pupil-size difference (`p2`), and response speed (the inverse of `s`)."
+ caption: "We used an exponential-decay function to model the difference in pupil-size between Land-on-Bright and Land-on-Dark trials (`p(t)`) as a function of time since display change (`t`). This function has four free parameters: full PLR latency (`t0`), initial pupil-size difference (`p1`), final pupil-size difference (`p2`), and response speed (the inverse of `s`)."
 --%
 
 For each participant separately, we determined the model parameters for the mean difference response in the Constant and Onset conditions (%FigFit). Next, we used paired-samples *t* tests to test for differences between model parameters, using a Bonferroni-corrected alpha level of .0125 (= .05 / 4 comparisons).
