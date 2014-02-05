@@ -32,5 +32,3 @@ affiliation: "Laboratoire de Psychologie Cognitive, CNRS, Aix-Marseille universi
 
 %-- include: "md/discussion.md" --%
 
-~
-
