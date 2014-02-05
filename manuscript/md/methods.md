@@ -1,6 +1,7 @@
 ## Materials and availability
 
-Experimental scripts, participant data, analysis scripts, and supplementary control analyses are available from the first author's website, or from <https://github.com/smathot/materials_for_P0001>.
+Experimental scripts, participant data, analysis scripts, and supplementary control analyses are available from the first author's website, or from  
+<https://github.com/smathot/materials_for_P0001>.
 
 ## Participants and ethics statement
 
