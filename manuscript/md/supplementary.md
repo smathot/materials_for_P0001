@@ -1,10 +1,21 @@
 ---
 title:
- "Supplement to: The pupillary light response reflects eye-movement preparation"
+ "Supplement to: The Pupillary Light Response Reflects Eye-movement Preparation"
 author:
   Sebastiaan Mathôt, Lotje van der Linden, Jonathan Grainger, and Françoise Vitu
-affiliation: "Laboratoire de Psychologie Cognitive, CNRS, Aix-Marseille université"
+affiliation:
+ - Aix-Marseille University, CNRS, LPC UMR 7290, Marseille, France
+correspondence:
+ - Aix-Marseille University, CNRS
+ - Laboratoire de Psychologie Cognitive, UMR 7290
+ - 3 Place Victor Hugo
+ - Centre St. Charles, Bâtiment 9, Case D
+ - 13331 Marseille
+ - France
+authornote: |
+ SM, JG, and FV were supported by ERC grant 230313 (<http://erc.europa.eu/>). LvdL was supported by a grant ('allocation de recherche') from the French ministry of research (2012–2015). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript. The authors declare no competing financial interests.
 ---
+
 
 This supplement contains additional analyses to accompany the manuscript *The Pupillary Light Response Reflects Eye-movement Preparation*.
 
@@ -42,3 +53,23 @@ When you attend to a stimulus without looking directly at it (i.e. covert attent
 In our data, gaze position was indeed biased towards the saccade target from 242 ms before saccade onset, as determined using an LME analysis with Participant as random effect, Target Side (Left or Right) as fixed effect, and Horizontal Gaze Position as dependent measure. This bias gradually increased to 0.03° just before the onset of the saccade. Although this bias was extremely small, we nevertheless verified that it did not affect our results. First we discarded all trials in which gaze position was, on average, biased towards the saccade target (51.6%). This left a subset of data in which gaze was biased slightly away from the saccade target (0.3°). All analyses described above were repeated on this subset of data.
 
 Compared to the main analyses, there were only two minor differences: When estimating the model parameters, there was no longer a difference in final pupil-size difference between the Constant and Onset conditions (`p2`; t(7) = 0.7120, p = 0.4995), and the difference in initial the pupil-size bias (`p1`) was no longer significant using our Bonferroni-corrected alpha level of .0125 (t(7) = 2.537, p = .0387). Other than that, there were no notable differences between the full dataset and this subset of the data. Crucially, this illustrates that our results are not due to a gaze-position bias prior to the eye movement, and demonstrates the robustness of the results.
+
+# Saccadic landing positions
+
+As shown in %FigEndPoints and %TblEndPoints saccades were, on average, quite accurate, with a slight undershoot, but without any discernible difference between conditions.
+
+%--
+figure:
+ id: FigEndPoints
+ source: FigEndPoints.svg
+ caption: |
+  Saccadic landing positions as a function of Condition and Landing Luminance. Dots correspond to landing positions on individual trials. The intersections of the dotted lines correspond to the positions of the leftwards saccade target, the fixation dot, and the rightwards saccade target. Each plots represents a full display. Units are in pixels.
+--%
+
+%--
+table:
+ id: TblEndPoints
+ source: TblEndPoints.csv
+ caption: |
+  Saccadic landing positions as a function Condition, Landing Luminance, and Saccade Direction. Units are in visual degrees relative to the display center.
+--%
