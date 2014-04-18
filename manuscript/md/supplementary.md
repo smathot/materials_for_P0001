@@ -17,7 +17,7 @@ authornote: |
 ---
 
 
-This supplement contains additional analyses to accompany the manuscript *The Pupillary Light Response Reflects Eye-movement Preparation*.
+This supplement contains additional analyses to accompany the manuscript *The Pupillary Light Response Reflects Eye-movement Preparation*. All resources related to this manuscript (scripts, data, etc.) can be obtained from: <https://github.com/smathot/materials_for_P0001>.
 
 # Overview
 
@@ -29,7 +29,7 @@ toc:
 
 # The PLR is locked to saccade onset
 
-An important question is whether the latency of the PLR (`t0`)  is locked to the presentation of the auditory cue, or to the onset of saccadic response. If the PLR was locked to the cue, this would suggest that it is a high-level effect that results from an endogenous shift of attention towards the cued side [cf. @Binda2013Bright;@Mathôt2013Plos;@Naber2013Tracking]. In contrast, if the PLR was locked to the saccadic response, this would suggest that it is a low-level, motoric effect that is linked to the execution of the eye movement, similar to the pre-saccadic shift of attention [@Deubel1996Common; @Kowler1995;@Hoffman1995].
+An important question is whether the latency of the PLR is locked to the presentation of the auditory cue, or to the onset of saccadic response. If the PLR was locked to the cue, this would suggest that it is a high-level effect that results from an endogenous shift of attention towards the cued side [cf. @Binda2013Bright;@Mathôt2013Plos;@Naber2013Tracking]. In contrast, if the PLR was locked to the saccadic response, this would suggest that it is a low-level, motoric effect that is linked to the execution of the eye movement, similar to the pre-saccadic shift of attention [@Deubel1996Common; @Kowler1995;@Hoffman1995].
 
 To test this, we divided trials into ten bins, separately for each participant, based on saccadic response time (SRT). Next, we determined the latency of the PLR (`t0`) for the Constant and Onset conditions for each bin, as described in the main text (*Modeling the PLR using exponential decay*).
 
@@ -59,7 +59,7 @@ figure:
  id: FigEndPoints
  source: FigEndPoints.svg
  caption: |
-  Saccadic landing positions as a function of Condition and Landing Luminance. Dots correspond to landing positions on individual trials. The intersections of the dotted lines correspond to the positions of the leftwards saccade target, the fixation dot, and the rightwards saccade target. Each plots represents a full display. Units are in pixels.
+  Saccadic landing positions as a function of Condition and Landing Luminance. Dots correspond to landing positions on individual trials. The intersections of the dotted lines correspond to the positions of the leftwards saccade target, the fixation dot, and the rightwards saccade target. Each plot represents a full display. Units are in pixels.
 --%
 
 %--
