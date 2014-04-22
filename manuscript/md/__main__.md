@@ -26,7 +26,7 @@ authornote: |
 
 ~
 
-# The Pupillary Light Response Reveals Eye-movement Preparation
+# The Pupillary Light Response Reflects Eye-movement Preparation
 
 %-- include: "md/introduction.md" --%
 
