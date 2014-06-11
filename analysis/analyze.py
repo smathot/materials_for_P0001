@@ -20,21 +20,24 @@ along with data_repository.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
 from exparser.DataMatrix import DataMatrix
-from analysis import helpers
+from analysis import helpers, fitting
+from exparser import Cache, Tools
 
 for a in sys.argv:
 	if 'exp1' in a:
 		exp = a
-		
-if 'exp1.antiBias' in sys.argv and 'matchBias' not in sys.argv:
-	raise Exception('Don\'t forget to enable matchBias for exp1.antiBias!')
 
-if '-' not in sys.argv and 'checkMissing' not in sys.argv:
-	raise Exception('Don\'t forget to enable checkMissing!')
-		
+if 'exp1.antiBias' in sys.argv and '@matchBias' not in sys.argv and \
+	'@matchBias:redo' not in sys.argv:
+	raise Exception('Don\'t forget to enable @matchBias for exp1.antiBias!')
+if exp == 'exp1' and '@matchBias' in sys.argv:
+	raise Exception('Don\'t enable @matchBias for exp1!')
+if '-' not in sys.argv and '@checkMissing' not in sys.argv:
+	raise Exception('Don\'t forget to enable @checkMissing!')
+
 print 'Session %s' % exp
 
-if 'exp1' in exp:	
+if 'exp1' in exp:
 	print 'Reading exp1 data ...'
 	dm = DataMatrix('data/data.exp1.npy')
 else:
@@ -42,31 +45,5 @@ else:
 	dm = DataMatrix('data/data.exp2.npy')
 print 'Done'
 
-dm = dm.select('saccErr == 0')
-dm = dm.select('saccLat2 != ""')
-dm = dm.select('saccLat2 > 50')
-dm = dm.select('saccLat2 < 2000')
-dm = dm.select('flipSDelay > 0')
-dm = dm.select('flipEDelay < 0')
-dm = dm.select('saccDur < 100')
-
-# Add the normalized saccade end position
-dm = dm.addField('saccNormX', dtype=float)
-dm['saccNormX'] = dm['saccEndX']
-dm['saccNormX'][dm.where('saccSide == "right"')] = 1024 - \
-	dm['saccEndX'][dm.where('saccSide == "right"')]
-dm = dm.select('saccNormX < 342')
-
-print 'From saccade onset: %.4f ms (%.4f)' % (dm['flipSDelay'].mean(), \
-	dm['flipSDelay'].std())
-print 'From saccade offset: %.4f ms (%.4f)' % (dm['flipEDelay'].mean(), \
-	dm['flipEDelay'].std())
-print 'Saccade duration: %.4f ms (%.4f)' % (dm['saccDur'].mean(), \
-	dm['saccDur'].std())
-
-for func in sys.argv:
-	if hasattr(helpers, func):
-		print 'Calling %s()' % func
-		retVal = getattr(helpers, func)(dm)
-		if retVal != None:
-			dm = retVal
+Tools.analysisLoop(dm, mods=[helpers, fitting], pre=['filter'],
+	cachePrefix='autoCache.%s.' % exp)

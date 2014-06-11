@@ -44,19 +44,31 @@ N = 8
 # Changing the trace lengths requires redoing the statistics
 preTraceLen = 300
 postTraceLen = 2000
+preShowLen = 175
+postShowLen = 1000
+prepWin = 220
 
 # Some styling for the plots
 brightColor = orange[1]
-darkColor = blue[1]
+darkColor = gray[5]
 constColor = green[2]
-swapColor = orange[2]
-onsetColor = red[2]
+swapColor = red[2]
+onsetColor = blue[2]
 color1 = blue[1]
 color2 = orange[1]
-flipSColor = green[2]
-flipEColor = red[2]
+flipSColor = brown[1]
+flipEColor = brown[1]
+
+brightStyle = '-'
+darkStyle = '--'
+constStyle = '-'
+swapStyle = ':'
+onsetStyle = '--'
+flipSStyle = ':'
+flipEStyle = ':'
+
 plt.rc('font', family='Arial', size=10)
 
 bigWide = 8,3
 big = 4,6
-norm = 4, 4 
+norm = 4, 4

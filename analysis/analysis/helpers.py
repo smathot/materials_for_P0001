@@ -23,6 +23,7 @@ from exparser import TraceKit, TangoPalette
 from exparser.PivotMatrix import PivotMatrix
 from exparser.DataMatrix import DataMatrix
 from exparser.AnovaMatrix import AnovaMatrix
+from exparser.Cache import cachedDataMatrix
 import numpy as np
 from scipy.stats import ttest_rel, linregress
 import shutil
@@ -30,6 +31,42 @@ import sys
 from fitting import *
 from const import *
 from figure import *
+
+@cachedDataMatrix
+def filter(dm):
+
+	"""
+	Filters the DataMatrix.
+
+	Arguments:
+	dm		--	DataMatrix
+
+	Returns:
+	A filtered DataMatrix.
+	"""
+
+	dm = dm.select('saccErr == 0')
+	dm = dm.select('saccLat2 != ""')
+	dm = dm.select('saccLat2 > 50')
+	dm = dm.select('saccLat2 < 2000')
+	dm = dm.select('flipSDelay > 0')
+	dm = dm.select('flipEDelay < 0')
+	dm = dm.select('saccDur < 100')
+
+	# Add the normalized saccade end position
+	dm = dm.addField('saccNormX', dtype=float)
+	dm['saccNormX'] = dm['saccEndX']
+	dm['saccNormX'][dm.where('saccSide == "right"')] = 1024 - \
+		dm['saccEndX'][dm.where('saccSide == "right"')]
+	dm = dm.select('saccNormX < 342')
+
+	print 'From saccade onset: %.4f ms (%.4f)' % (dm['flipSDelay'].mean(), \
+		dm['flipSDelay'].std())
+	print 'From saccade offset: %.4f ms (%.4f)' % (dm['flipEDelay'].mean(), \
+		dm['flipEDelay'].std())
+	print 'Saccade duration: %.4f ms (%.4f)' % (dm['saccDur'].mean(), \
+		dm['saccDur'].std())
+	return dm
 
 def errorTrace(aStats, dm1, dm2, phase, signal='pupil'):
 
@@ -148,6 +185,7 @@ def mainPlots(dm):
 
 		# Pre difference plot
 		ax = plt.subplot2grid((4,7), (0,0), colspan=1)
+		plt.ylabel('Pupil-size diff (norm.)')
 		plt.ylim(-.5, .2)
 		ax.spines["right"].set_visible(False)
 		ax.get_yaxis().tick_left()
@@ -163,7 +201,7 @@ def mainPlots(dm):
 		sMean = _dm['flipSDelay'].mean()
 		plt.axvspan(preTraceLen-sMin, preTraceLen-sMax, color=flipSColor, \
 			alpha=.1)
-		plt.axvline(preTraceLen-sMean, color=flipSColor)
+		plt.axvline(preTraceLen-sMean, color=flipSColor, linestyle=flipEStyle)
 		for cond in ('constant', 'swap', 'onset'):
 			print '\t%s' % cond
 			__dm = _dm.select('cond == "%s"' % cond, verbose=False)
@@ -177,14 +215,19 @@ def mainPlots(dm):
 				baseline=baseline)
 			if cond == 'constant':
 				col = constColor
+				style = constStyle
 			elif cond == 'swap':
 				col = swapColor
+				style = swapStyle
 			else:
 				col = onsetColor
-			plt.plot(xPre, whitePre-blackPre, color=col, label=cond)
+				style = onsetStyle
+			plt.plot(xPre, whitePre-blackPre, color=col, label=cond,
+				linestyle=style)
 			if cond == 'swap':
 				plt.plot(xPre, blackPre-whitePre, ':', color=col, label= \
 					'inverse swap')
+		plt.xlim(preTraceLen-preShowLen, preTraceLen)
 
 		# Post difference plot
 		ax = plt.subplot2grid((4,7), (0,1), colspan=6)
@@ -194,8 +237,8 @@ def mainPlots(dm):
 		ax.axhline(0, linestyle='--', color='black')
 		plt.xlim(0, postTraceLen)
 		plt.xticks(range(150, postTraceLen, 150))
-		ax.get_yaxis().tick_right()
-		#ax.get_yaxis().set_ticklabels([])
+		#ax.get_yaxis().tick_right()
+		ax.get_yaxis().set_ticklabels([])
 		# Title
 		plt.text(0.1, 0.9, 'Difference', horizontalalignment='center', \
 			verticalalignment='center', transform=ax.transAxes)
@@ -204,7 +247,9 @@ def mainPlots(dm):
 		eMax = -_dm['flipEDelay'].max()
 		eMean = -_dm['flipEDelay'].mean()
 		plt.axvspan(eMin, eMax, color=flipEColor, alpha=.1)
-		plt.axvline(eMean, color=flipEColor)
+		plt.axvline(eMean, color=flipEColor, linestyle=flipEStyle)
+		# Draw 'window of preparation'
+		plt.axvspan(0, prepWin, color=green[1], alpha=.2)
 		for cond in ('constant', 'swap', 'onset'):
 			print '\t%s' % cond
 			__dm = _dm.select('cond == "%s"' % cond, verbose=False)
@@ -218,14 +263,19 @@ def mainPlots(dm):
 				postTraceLen, baseline=baseline)
 			if cond == 'constant':
 				col = constColor
+				style = constStyle
 			elif cond == 'swap':
 				col = swapColor
+				style = swapStyle
 			else:
 				col = onsetColor
-			plt.plot(xPost, whitePost-blackPost, color=col, label=cond)
+				style = onsetStyle
+			plt.plot(xPost, whitePost-blackPost, color=col, label=cond,
+				linestyle=style)
 			if cond == 'swap':
 				plt.plot(xPost, blackPost-whitePost, ':', color=col, label= \
 					'inverse swap')
+		plt.xlim(0, postShowLen)
 		plt.legend(frameon=False)
 
 		# Main plots
@@ -248,7 +298,8 @@ def mainPlots(dm):
 			sMean = __dm['flipSDelay'].mean()
 			plt.axvspan(preTraceLen-sMin, preTraceLen-sMax, color=flipSColor, \
 				alpha=.1)
-			plt.axvline(preTraceLen-sMean, color=flipSColor)
+			plt.axvline(preTraceLen-sMean, color=flipSColor,
+			   linestyle=flipSStyle)
 
 			if subjectNr == 'all':
 				TraceKit.markStats(ax, aStatsPre[:,0], minSmp=200, alpha=.01)
@@ -260,18 +311,20 @@ def mainPlots(dm):
 			TraceKit.plotTraceAvg(ax, _dmWhite, aErr=aErrWhite, signal='pupil',
 				phase='cue', lock='end', traceLen=preTraceLen,
 				baseline=baseline, baselineLock=baselineLock,
-				lineColor=brightColor, errColor=brightColor)
+				lineColor=brightColor, errColor=brightColor,
+				lineStyle=brightStyle)
 			TraceKit.plotTraceAvg(ax, _dmBlack, aErr=aErrBlack, signal='pupil',
 				phase='cue', lock='end', traceLen=preTraceLen,
 				baseline=baseline, baselineLock=baselineLock,
-				lineColor=darkColor, errColor=darkColor)
+				lineColor=darkColor, errColor=darkColor, lineStyle=darkStyle)
 			plt.xticks(range(150, preTraceLen+1, 150), range(-preTraceLen+150, \
 				1, 150))
 			if i < 3:
 				ax.get_xaxis().set_ticklabels([])
 			if cond == 'swap':
-				plt.ylabel('Normalized pupil size (arbitrary units)')
-			plt.xlim(0, preTraceLen)
+				plt.ylabel('Pupil size (norm.)')
+			#plt.xlim(0, preTraceLen)
+			plt.xlim(preTraceLen-preShowLen, preTraceLen)
 
 			# Post-saccade
 			ax = plt.subplot2grid((4,7), (i,1), colspan=6)
@@ -287,11 +340,11 @@ def mainPlots(dm):
 			eMean = -__dm['flipEDelay'].mean()
 			plt.axvspan(eMin, eMax, color=flipEColor, \
 				alpha=.1)
-			plt.axvline(eMean, color=flipEColor)
+			plt.axvline(eMean, color=flipEColor, linestyle=flipEStyle)
 
 			if subjectNr == 'all':
 				aStatsPost = np.load('stats/%s/%s.post.npy' % (exp, cond))
-				TraceKit.markStats(ax, aStatsPost[:,0], minSmp=200, alpha=.01)
+				TraceKit.markStats(ax, aStatsPost[:,0], minSmp=200, alpha=.4)
 				aErrWhite, aErrBlack, aDiff = errorTrace(aStatsPost, _dmWhite,
 					_dmBlack, phase='postSacc')
 			else:
@@ -300,11 +353,12 @@ def mainPlots(dm):
 			TraceKit.plotTraceAvg(ax, _dmWhite, aErr=aErrWhite, signal='pupil',
 				phase='postSacc', traceLen=postTraceLen, baseline=baseline,
 				lineColor=brightColor, errColor=brightColor, \
-				baselineLock=baselineLock, label='Bright')
+				baselineLock=baselineLock, label='Bright',
+				lineStyle=brightStyle)
 			TraceKit.plotTraceAvg(ax, _dmBlack, aErr=aErrBlack, signal='pupil',
 				phase='postSacc', traceLen=postTraceLen, baseline=baseline,
 				lineColor=darkColor, errColor=darkColor, \
-				baselineLock=baselineLock, label='Dark')
+				baselineLock=baselineLock, label='Dark', lineStyle=darkStyle)
 			plt.xlim(0,postTraceLen)
 			if i == 3:
 				plt.xlabel('Time after saccade (ms)')
@@ -316,8 +370,9 @@ def mainPlots(dm):
 
 			if cond == 'constant':
 				plt.legend(frameon=False, loc='lower left')
-
+			plt.xlim(0, postShowLen)
 			i += 1
+
 		saveFig('main.subject.%s' % subjectNr, show=False)
 
 def posTracePlots(dm, signal='x'):
@@ -459,6 +514,13 @@ def descriptives(dm):
 
 	"""Prints descriptive statistics and perform some basic anovas."""
 
+
+	pm = PivotMatrix(dm, ['cond'], ['subject_nr'], dv='saccEndX', func='size')
+	pm.save('output/%s/cellCount.cond.csv' % exp)
+	print pm
+
+	quit()
+
 	pm = PivotMatrix(dm, ['saccSide'], ['subject_nr'], dv='saccEndX')
 	pm.save('output/%s/saccEndX.saccSide.csv' % exp)
 
@@ -480,6 +542,7 @@ def descriptives(dm):
 	print 'Saccade latency: %.4f (%.4f)' % (dm['saccLat2'].mean(), \
 		dm['saccLat2'].std())
 
+@cachedDataMatrix
 def matchBias(dm):
 
 	"""
@@ -487,12 +550,16 @@ def matchBias(dm):
 
 	Arguments:
 	dm		--	DataMatrix
+
+	Returns:
+	A matched DataMatrix.
 	"""
 
 	dm = dm.addField('gazeBias', dtype=float)
+	print 'Adding gaze-bias information ...'
 	for i in dm.range():
 		a = TraceKit.getTrace(dm[i], signal='x', phase='cue', \
-			traceLen=preTraceLen, lock='end')
+			traceLen=preTraceLen, lock='end', nanPad=False)
 		saccSide = dm['saccSide'][i]
 		_a = a[:-50]
 		bias = (_a-512).mean()
@@ -503,13 +570,24 @@ def matchBias(dm):
 		dm['gazeBias'].std())
 	newFig()
 	plt.subplot(2,1,1)
-	plt.title('Unbalanced gaze bias')
+	plt.title('Unbalanced: M = %.4f, SD = %.4f' % (dm['gazeBias'].mean(), \
+		dm['gazeBias'].std()))
 	plt.hist(dm['gazeBias'], bins=50, color=blue[1])
 	plt.axvline(dm['gazeBias'].mean())
-
-	dm = dm.select('gazeBias < 0')
+	#dm = dm.select('gazeBias < 0')
+	dm = dm.balance('gazeBias', .1, verbose=True)
+	#newDm = None
+	#for _dm in dm.group('subject_nr'):
+		#print 'Balancing subject_nr %d' % _dm['subject_nr'][0]
+		#if newDm == None:
+			#newDm = _dm.balance('gazeBias', 1)
+		#else:
+			#newDm += _dm.balance('gazeBias', 1)
+	#dm = newDm
+	dm = dm.select('__unbalanced__ == 0')
 	plt.subplot(2,1,2)
-	plt.title('Balanced gaze bias')
+	plt.title('Balanced: M = %.4f, SD = %.4f' % (dm['gazeBias'].mean(), \
+		dm['gazeBias'].std()))
 	plt.hist(dm['gazeBias'], bins=50, color=blue[1])
 	plt.axvline(dm['gazeBias'].mean())
 	print 'Antibias: M = %.4f, SD = %.4f' % (dm['gazeBias'].mean(), \
@@ -517,6 +595,7 @@ def matchBias(dm):
 	saveFig('gazeBias')
 	return dm
 
+@cachedDataMatrix
 def checkMissing(dm, checkCue=True, checkPostSacc=True):
 
 	"""
@@ -543,13 +622,13 @@ def checkMissing(dm, checkCue=True, checkPostSacc=True):
 		if checkCue:
 			a = TraceKit.getTrace(dm[i], signal='pupil', phase='cue', \
 				lock='end', baseline=baseline, baselineLock=baselineLock,
-				traceLen=preTraceLen)
+				traceLen=preTraceLen, nanPad=False)
 			if np.isnan(a.sum()):
 				missing = True
 		if checkPostSacc:
 			a = TraceKit.getTrace(dm[i], signal='pupil', phase='postSacc', \
 				lock='start', baseline=baseline, baselineLock=baselineLock,
-				traceLen=postTraceLen)
+				traceLen=postTraceLen, nanPad=False)
 			if np.isnan(a.sum()):
 				missing = True
 		if missing:
@@ -640,3 +719,29 @@ def latencyCorr(dm):
 	print aov
 	aov.save('output/%s/aov.latencyCorr.csv' % exp)
 
+def saccMetricsStats(dm):
+
+	"""
+	Analyzes the effect of condition on
+
+	- Saccade end points
+	- SOA
+	- Error rate
+
+	Arguments:
+	dm		--	A DataMatrix
+	"""
+
+	from exparser.RBridge import RBridge
+	global R
+	try:
+		R
+	except:
+		R = RBridge()
+
+	cm = dm.collapse(['cond', 'subject_nr'], 'saccEndX')
+	R.load(cm)
+	am = R.aov('mean ~ cond + Error(subject_nr/cond)')
+	am.save('output/%s/aov.saccEndX.csv' % exp)
+	am = R.aov('count ~ cond + Error(subject_nr/cond)')
+	am.save('output/%s/aov.cellCount.csv' % exp)
