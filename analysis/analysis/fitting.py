@@ -23,6 +23,7 @@ import numpy as np
 from const import *
 from figure import *
 from exparser.DataMatrix import DataMatrix
+from exparser.RBridge import R
 from scipy.stats import ttest_rel
 
 def pupilCurve(x, t0=300., speed=500., lim1=-0.2, lim2=0.0):
@@ -187,6 +188,19 @@ def fit(dm, suffix='', maxSmp=None):
 			aOnset.std() / np.sqrt(N))
 		t, p = ttest_rel(aConst, aOnset)
 		print 'Const vs onset, t = %.4f, p = %.4f' % (t, p)
+		# Bayesian estimation (t-test)
+		if dv == 't0':
+			rope = -20, 20
+		elif dv == 'speed':
+			rope = -20, 20
+		elif dv == 'lim1':
+			rope = -.02, .02
+		else:
+			rope = -.02, .02
+		rope = -.02, .02
+		rope = -1, 1
+		bm = R().best(aOnset-aConst, rope=rope)
+		bm._print('Onset-Const')
 
 def splitFit(dm):
 
@@ -296,6 +310,11 @@ def prepFit(dm, suffix=''):
 
 	# Summarize the data and perform ttests on the model parameters
 	for dv in ['s', 'i']:
+
+		if dv == 's':
+			rope = -0.05, .05
+		else:
+			rope = -2, 2
 		print'\nAnalyzing %s' % dv
 		aConst = dm['%sConst' % dv]
 		aOnset = dm['%sOnset' % dv]
@@ -306,9 +325,17 @@ def prepFit(dm, suffix=''):
 			aOnset.std() / np.sqrt(N))
 		print 'Swap: M = %f, SE = %f' % (aSwap.mean(), \
 			aSwap.std() / np.sqrt(N))
+		# Standard t-tests
 		t, p = ttest_rel(aConst, aOnset)
 		print 'Const vs onset, t = %.4f, p = %.4f' % (t, p)
 		t, p = ttest_rel(aSwap, aOnset)
 		print 'Swap vs onset, t = %.4f, p = %.4f' % (t, p)
 		t, p = ttest_rel(aConst, aSwap)
 		print 'Const vs swap, t = %.4f, p = %.4f' % (t, p)
+		# Bayesian estimation (t-test)
+		bm = R().best(aOnset-aConst, rope=rope)
+		bm._print('Onset-Const')
+		bm = R().best(aOnset-aSwap, rope=rope)
+		bm._print('Onset-Swap')
+		bm = R().best(aConst-aSwap, rope=rope)
+		bm._print('Const-Swap')

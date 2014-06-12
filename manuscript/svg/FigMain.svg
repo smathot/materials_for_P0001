@@ -38,20 +38,20 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1680"
-     inkscape:window-height="1030"
+     inkscape:window-height="986"
      id="namedview2060"
      showgrid="false"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:zoom="0.87407407"
-     inkscape:cx="247.22958"
-     inkscape:cy="400.39048"
+     inkscape:zoom="1.7481481"
+     inkscape:cx="100.9753"
+     inkscape:cy="390.3481"
      inkscape:window-x="-2"
      inkscape:window-y="547"
      inkscape:window-maximized="1"
-     inkscape:current-layer="patch_42"
+     inkscape:current-layer="g9898"
      inkscape:snap-global="true"
      inkscape:snap-bbox="true"
      showguides="true"
@@ -498,13 +498,7 @@
     <g
        style="stroke-linecap:butt;stroke-linejoin:round"
        id="patch_1-5"
-       transform="translate(656.92834,-2.828388)">
-      <path
-         inkscape:connector-curvature="0"
-         d="M 0,432 288,432 288,0 0,0 z"
-         style="fill:#ffffff;stroke-linecap:butt;stroke-linejoin:round"
-         id="path4007" />
-    </g>
+       transform="translate(656.92834,-2.828388)" />
     <g
        style="stroke-linecap:butt;stroke-linejoin:round"
        id="text_44-2"
@@ -5413,7 +5407,7 @@
            inkscape:connector-curvature="0"
            sodipodi:nodetypes="cc" />
         <path
-           style="fill:#a40000;stroke:#a40000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:8.0000001, 2.00000002, 1.00000001, 2.00000002;stroke-dashoffset:0"
+           style="fill:#a40000;stroke:#a40000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1.99999999,1.99999999;stroke-dashoffset:0"
            d="m 242.94061,69.119726 15.2,0"
            id="path5168-9-6"
            inkscape:connector-curvature="0"
@@ -5430,7 +5424,7 @@
              y="84.602539"
              id="tspan5099-07-9-4-1">Inv. swap</tspan></text>
         <path
-           style="fill:#a40000;stroke:#a40000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:2.00000002, 1.00000001;stroke-dashoffset:0"
+           style="fill:#a40000;stroke:#a40000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:7.99999998,1.99999999,1,1.99999999;stroke-dashoffset:0"
            d="m 242.94061,81.119727 15.2,0"
            id="path5168-7-3-3"
            inkscape:connector-curvature="0"

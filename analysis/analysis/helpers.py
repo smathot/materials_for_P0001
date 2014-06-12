@@ -722,26 +722,52 @@ def latencyCorr(dm):
 def saccMetricsStats(dm):
 
 	"""
-	Analyzes the effect of condition on
-
-	- Saccade end points
-	- SOA
-	- Error rate
+	Analyzes the effect of condition on saccade landing position and error rate.
 
 	Arguments:
 	dm		--	A DataMatrix
 	"""
 
-	from exparser.RBridge import RBridge
-	global R
-	try:
-		R
-	except:
-		R = RBridge()
-
+	dm['saccEndX'] = dm['saccEndX'] - 512
+	dm['saccEndX'][np.where(dm['saccSide'] == 'left')] *= -1
 	cm = dm.collapse(['cond', 'subject_nr'], 'saccEndX')
-	R.load(cm)
-	am = R.aov('mean ~ cond + Error(subject_nr/cond)')
-	am.save('output/%s/aov.saccEndX.csv' % exp)
-	am = R.aov('count ~ cond + Error(subject_nr/cond)')
-	am.save('output/%s/aov.cellCount.csv' % exp)
+
+	R().load(cm)
+	am = R().aov('mean ~ cond + Error(subject_nr/cond)')
+	am._print('SaccEndX')
+	am.save('output/%s/aov.saccEndX.csv')
+	am = R().aov('count ~ cond + Error(subject_nr/cond)')
+	am._print('Count')
+	am.save('output/%s/aov.cellCount.csv')
+
+	rope = -34, 34
+	aOnset = cm.select('cond == "onset"')['mean']
+	aConstant = cm.select('cond == "constant"')['mean']
+	aSwap = cm.select('cond == "swap"')['mean']
+
+	print 'M(saccEndx, onset) = %.4f' % (aOnset.mean()/pxPerDeg)
+	print 'M(saccEndx, const) = %.4f' % (aConstant.mean()/pxPerDeg)
+	print 'M(saccEndx, swap) = %.4f' % (aSwap.mean()/pxPerDeg)
+
+	bm = R().best(aConstant-aOnset, rope=rope)
+	bm._print('Constant vs Onset (saccEndX)')
+	bm = R().best(aConstant-aSwap, rope=rope)
+	bm._print('Constant vs Swap (saccEndX)')
+	bm = R().best(aSwap-aOnset, rope=rope)
+	bm._print('Swap vs Onset (saccEndX)')
+
+	rope = -5, 5
+	aOnset = cm.select('cond == "onset"')['count']
+	aConstant = cm.select('cond == "constant"')['count']
+	aSwap = cm.select('cond == "swap"')['count']
+	bm = R().best(aConstant-aOnset, rope=rope)
+	bm._print('Constant vs Onset (count)')
+	bm = R().best(aConstant-aSwap, rope=rope)
+	bm._print('Constant vs Swap (count)')
+	bm = R().best(aSwap-aOnset, rope=rope)
+	bm._print('Swap vs Onset (count)')
+
+	print 'M(count, onset) = %.4f' % (100 - 100.* (aOnset.mean()/120))
+	print 'M(count, const) = %.4f' % (100 - 100.* (aConstant.mean()/120))
+	print 'M(count, swap) = %.4f' % (100 - 100.* (aSwap.mean()/120))
+
