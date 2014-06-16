@@ -302,7 +302,8 @@ def mainPlots(dm):
 			   linestyle=flipSStyle)
 
 			if subjectNr == 'all':
-				TraceKit.markStats(ax, aStatsPre[:,0], minSmp=200, alpha=.01)
+				TraceKit.markStats(ax, aStatsPre[:,0], minSmp=200, alpha=.01,
+					hiExt=True)
 				aErrWhite, aErrBlack, aDiff = errorTrace(aStatsPre, _dmWhite,
 					_dmBlack, phase='cue')
 			else:
@@ -344,7 +345,8 @@ def mainPlots(dm):
 
 			if subjectNr == 'all':
 				aStatsPost = np.load('stats/%s/%s.post.npy' % (exp, cond))
-				TraceKit.markStats(ax, aStatsPost[:,0], minSmp=200, alpha=.4)
+				TraceKit.markStats(ax, aStatsPost[:,0], minSmp=200, alpha=.4,
+					loExt=True)
 				aErrWhite, aErrBlack, aDiff = errorTrace(aStatsPost, _dmWhite,
 					_dmBlack, phase='postSacc')
 			else:
@@ -740,34 +742,58 @@ def saccMetricsStats(dm):
 	am._print('Count')
 	am.save('output/%s/aov.cellCount.csv')
 
-	rope = -34, 34
 	aOnset = cm.select('cond == "onset"')['mean']
 	aConstant = cm.select('cond == "constant"')['mean']
 	aSwap = cm.select('cond == "swap"')['mean']
-
 	print 'M(saccEndx, onset) = %.4f' % (aOnset.mean()/pxPerDeg)
 	print 'M(saccEndx, const) = %.4f' % (aConstant.mean()/pxPerDeg)
 	print 'M(saccEndx, swap) = %.4f' % (aSwap.mean()/pxPerDeg)
 
-	bm = R().best(aConstant-aOnset, rope=rope)
-	bm._print('Constant vs Onset (saccEndX)')
-	bm = R().best(aConstant-aSwap, rope=rope)
-	bm._print('Constant vs Swap (saccEndX)')
-	bm = R().best(aSwap-aOnset, rope=rope)
-	bm._print('Swap vs Onset (saccEndX)')
-
-	rope = -5, 5
 	aOnset = cm.select('cond == "onset"')['count']
 	aConstant = cm.select('cond == "constant"')['count']
 	aSwap = cm.select('cond == "swap"')['count']
-	bm = R().best(aConstant-aOnset, rope=rope)
-	bm._print('Constant vs Onset (count)')
-	bm = R().best(aConstant-aSwap, rope=rope)
-	bm._print('Constant vs Swap (count)')
-	bm = R().best(aSwap-aOnset, rope=rope)
-	bm._print('Swap vs Onset (count)')
-
 	print 'M(count, onset) = %.4f' % (100 - 100.* (aOnset.mean()/120))
 	print 'M(count, const) = %.4f' % (100 - 100.* (aConstant.mean()/120))
 	print 'M(count, swap) = %.4f' % (100 - 100.* (aSwap.mean()/120))
 
+
+def fixationStability(dm, offset=50):
+
+	"""
+	Determines the fixation stability during the post-saccade epoch for each
+	of the conditions.
+
+	Arguments:
+	dm		--	A DataMatrix
+
+	Keyword arguments:
+	offset	--	The number of samples to skip at the beginning, to avoid taking
+				into account the end of the saccade. (default=50)
+	"""
+
+	@cachedDataMatrix
+	def addFixStabInfo(dm, offset):
+		print 'Determining fixation stability ...'
+		dm = dm.addField('fixStabX', dtype=float)
+		for i in dm.range():
+			a = TraceKit.getTrace(dm[i], signal='x', phase='postSacc',
+				lock='start', offset=offset, traceLen=postTraceLen-offset,
+				nanPad=False)
+			print '%.4d\tM = %.2f, SD = %.2f' % (i, a.mean(), np.std(a))
+			dm['fixStabX'][i] = np.std(a)
+		print 'Done'
+		return dm
+	dm = addFixStabInfo(dm, offset, cacheId='fixStabInfo.%d' % offset)
+
+	cm = dm.collapse(['cond', 'subject_nr'], 'fixStabX')
+	R().load(cm)
+	am = R().aov('mean ~ cond + Error(subject_nr/cond)')
+	am._print('SaccEndX')
+	am.save('output/%s/aov.fixStabX.csv')
+
+	aOnset = cm.select('cond == "onset"')['mean']
+	aConstant = cm.select('cond == "constant"')['mean']
+	aSwap = cm.select('cond == "swap"')['mean']
+	print 'M(fixStabX, onset) = %.4f' % (aOnset.mean()/pxPerDeg)
+	print 'M(fixStabX, const) = %.4f' % (aConstant.mean()/pxPerDeg)
+	print 'M(fixStabX, swap) = %.4f' % (aSwap.mean()/pxPerDeg)

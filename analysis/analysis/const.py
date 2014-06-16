@@ -72,3 +72,4 @@ plt.rc('font', family='Arial', size=10)
 bigWide = 8,3
 big = 4,6
 norm = 4, 4
+flat = 4, 2

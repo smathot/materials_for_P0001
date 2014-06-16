@@ -19,12 +19,13 @@ along with data_repository.  If not, see <http://www.gnu.org/licenses/>.
 
 import __future__
 from exparser import TraceKit, Fitting, Plot
+from exparser.Cache import cachedArray
 import numpy as np
 from const import *
 from figure import *
 from exparser.DataMatrix import DataMatrix
 from exparser.RBridge import R
-from scipy.stats import ttest_rel
+from scipy.stats import ttest_rel, nanmean, nanstd
 
 def pupilCurve(x, t0=300., speed=500., lim1=-0.2, lim2=0.0):
 
@@ -50,6 +51,121 @@ def pupilCurve(x, t0=300., speed=500., lim1=-0.2, lim2=0.0):
 	a = np.exp(-(x-t0)/speed)
 	a[:t0] = 1
 	return a * (lim2-lim1) + lim1
+
+@cachedArray
+def getDiffTrace(dm):
+
+	"""desc: |
+	The difference pupil trace, i.e. the difference between Land-on-Dark and
+	Land-on-Bright trials.
+
+	arguments:
+		dm:		A DataMatrix.
+
+	returns: |
+		A difference trace.
+	"""
+
+	dmWhite = dm.select('saccCol == "white"', verbose=False)
+	xAvg, yAvg, errAvg= TraceKit.getTraceAvg(dm, signal='pupil',
+		phase='postSacc', traceLen=postTraceLen, baseline=baseline,
+		baselineLock=baselineLock)
+	xWhite, yWhite, errWhite = TraceKit.getTraceAvg(dmWhite,
+		signal='pupil', phase='postSacc', traceLen=postTraceLen,
+		baseline=baseline, baselineLock=baselineLock)
+	yWhite -= yAvg
+	return yWhite
+
+
+def fitSwap(dm, suffix='all', baseline=False):
+
+	"""desc: |
+	Description.
+
+	keywords:
+		all:
+			desc:	A suffix.
+			type:	[str, unicode]
+
+	returns:
+		desc: |
+			- None if suffix is 'all'
+			- Otherwise An (i1, i2) tuple indicating the end of the preparation
+			  period and the start of the non-preparation period.
+		type:		[tuple, None]
+	"""
+
+
+	dmSwap = dm.select('cond == "swap"', verbose=False)
+	ySwap = getDiffTrace(dmSwap, cacheId='swapDiff%s' % suffix)
+	dmOnset = dm.select('cond == "onset"', verbose=False)
+	yOnset = getDiffTrace(dmOnset, cacheId='onsetDiff%s' % suffix)
+	dmConst= dm.select('cond == "constant"', verbose=False)
+	yConst = getDiffTrace(dmConst, cacheId='constDiff%s' % suffix)
+	lP = []
+	lErr = []
+	for i in np.arange(1000):
+		y1 = yConst[i]
+		y2 = yOnset[i]
+		y3 = ySwap[i]
+		pBest = None
+		errBest = None
+		for p in np.linspace(0, 1, 100):
+			y3est = p*-y1 + (1-p)*y2
+			err = (y3est-y3)**2
+			if errBest == None or err < errBest:
+				errBest = err
+				pBest = p
+		lP.append(pBest)
+		lErr.append(errBest)
+	aP = np.array(lP)
+	fig = newFig(size=flat)
+	plt.ylim(-.1, 1.1)
+	plt.axhline(0, linestyle=':', color='black')
+	plt.axhline(1, linestyle=':', color='black')
+	plt.yticks(np.linspace(0,1,6))
+	plt.ylabel('Preparation')
+	plt.xlabel('Time relative to change (ms)')
+	if suffix == 'all':
+		# Values hard-coded based on fitSwapAll() output
+		plt.axvspan(352.50-1.96*13.22, 352.50+1.96*13.22, color=brown[1],
+			alpha=.1)
+		plt.axvline(352.50, color=brown[1], linestyle='--')
+	else:
+		lRoi = TraceKit.markStats(plt.gca(), aP, thr=.5, below=False,
+			color=green[0])
+		if len(lRoi) != 1:
+			i1 = np.nan
+		else:
+			i1 = lRoi[0][1]
+		lRoi = TraceKit.markStats(plt.gca(), aP, thr=.5, below=True, color=red[0])
+		if len(lRoi) != 1:
+			i2 = np.nan
+		else:
+			i2 = lRoi[0][0]
+	plt.plot(aP, color=blue[1])
+	saveFig('fitSwap/%s' % suffix)
+	if suffix != 'all':
+		return i1, i2
+
+def fitSwapAll(dm):
+
+	"""desc: |
+	Performs the fitSwap() procedure for all participants separately.
+	"""
+
+	l1 = []
+	l2 = []
+	for _dm in dm.group('subject_nr'):
+		i1, i2 = fitSwap(_dm, suffix='subject%d' % _dm['subject_nr'][0])
+		l1.append(i1)
+		l2.append(i2)
+	print l1
+	print 'Before preparation: M = %.2f, SE = %.2f' % (nanmean(l1),
+		nanstd(l1)/np.sqrt(len(l1)))
+	print l2
+	print 'After preparation: M = %.2f, SE = %.2f' % (nanmean(l2),
+		nanstd(l2)/np.sqrt(len(l2)))
 
 def fitCurve(x, y, label=None, col='black', linewidth=1, plot=True,
 	lineStyle='-'):
@@ -90,7 +206,7 @@ def fit(dm, suffix='', maxSmp=None):
 	Fits the data based on an exponential pupil model.
 
 	Arguments:
-	dm		--	DataMatrix
+	dm		--	DataMatrixpass
 
 	Keyword arguments:
 	suffix	--	A suffix for the output files. (default='')
@@ -189,18 +305,6 @@ def fit(dm, suffix='', maxSmp=None):
 		t, p = ttest_rel(aConst, aOnset)
 		print 'Const vs onset, t = %.4f, p = %.4f' % (t, p)
 		# Bayesian estimation (t-test)
-		if dv == 't0':
-			rope = -20, 20
-		elif dv == 'speed':
-			rope = -20, 20
-		elif dv == 'lim1':
-			rope = -.02, .02
-		else:
-			rope = -.02, .02
-		rope = -.02, .02
-		rope = -1, 1
-		bm = R().best(aOnset-aConst, rope=rope)
-		bm._print('Onset-Const')
 
 def splitFit(dm):
 
@@ -310,11 +414,6 @@ def prepFit(dm, suffix=''):
 
 	# Summarize the data and perform ttests on the model parameters
 	for dv in ['s', 'i']:
-
-		if dv == 's':
-			rope = -0.05, .05
-		else:
-			rope = -2, 2
 		print'\nAnalyzing %s' % dv
 		aConst = dm['%sConst' % dv]
 		aOnset = dm['%sOnset' % dv]
@@ -332,10 +431,18 @@ def prepFit(dm, suffix=''):
 		print 'Swap vs onset, t = %.4f, p = %.4f' % (t, p)
 		t, p = ttest_rel(aConst, aSwap)
 		print 'Const vs swap, t = %.4f, p = %.4f' % (t, p)
-		# Bayesian estimation (t-test)
-		bm = R().best(aOnset-aConst, rope=rope)
-		bm._print('Onset-Const')
-		bm = R().best(aOnset-aSwap, rope=rope)
-		bm._print('Onset-Swap')
-		bm = R().best(aConst-aSwap, rope=rope)
-		bm._print('Const-Swap')
+
+def blockPrepFit(dm):
+
+	"""
+	Perform the prepFit analysis separately for the first and second half of the
+	experiment.
+
+	Arguments:
+	dm		--	A DataMatrix.
+	"""
+
+	dm1 = dm.select('count_block_sequence <= 4')
+	dm2 = dm.select('count_block_sequence > 4')
+	prepFit(dm1, suffix='.firstHalf')
+	prepFit(dm2, suffix='.secondHalf')
