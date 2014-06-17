@@ -41,13 +41,6 @@ pxPerDeg = 34
 # Number of subjects
 N = 8
 
-# Changing the trace lengths requires redoing the statistics
-preTraceLen = 300
-postTraceLen = 2000
-preShowLen = 175
-postShowLen = 1000
-prepWin = 220
-
 # Some styling for the plots
 brightColor = orange[1]
 darkColor = gray[5]
@@ -73,3 +66,27 @@ bigWide = 8,3
 big = 4,6
 norm = 4, 4
 flat = 4, 2
+
+# The model to be used for the mixed-model trace
+traceModel = 'saccCol + (1|subject_nr)'
+winSize = 1
+# Trace parameters
+preTraceLen = 175
+postTraceLen = 1000
+prepWin = 220
+traceParamsPre = {
+	'signal'		: 'pupil',
+	'lock'			: 'end',
+	'phase'			: 'cue',
+	'baseline'		: 'baseline',
+	'baselineLock'	: 'end',
+	'traceLen'		: preTraceLen
+	}
+traceParamsPost = {
+	'signal'		: 'pupil',
+	'lock'			: 'start',
+	'phase'			: 'postSacc',
+	'baseline'		: 'baseline',
+	'baselineLock'	: 'end',
+	'traceLen'		: postTraceLen
+	}

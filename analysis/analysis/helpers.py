@@ -68,102 +68,6 @@ def filter(dm):
 		dm['saccDur'].std())
 	return dm
 
-def errorTrace(aStats, dm1, dm2, phase, signal='pupil'):
-
-	"""
-	Calculates minimum and maximum values for two traces, in order to plot a
-	two-trace plot with 95% confidence intervals.
-
-	Arguments:
-	aStats		--	An array as returns by `TraceKit.mixedModelTrace()`.
-	dm1			--	The first DataMatrix.
-	dm2			--	The second DataMatrix.
-	phase		--	The phase to analyze.
-
-	Keyword arguments:
-	signal		--	The signal to use for the error. (default='pupil')
-
-	Returns:
-	An (aErr1, aErr2, aDiff) tuple, where aErrX are two dimensional array with
-	upper and lower bounds for the traces. aDiff corresponds to the difference
-	traces.
-	"""
-
-	traceLen = aStats.shape[0]
-	if phase == 'postSacc':
-		lock = 'start'
-	else:
-		lock = 'end'
-	# Get the two average traces
-	a1 = TraceKit.getTraceAvg(dm1, signal=signal, phase=phase, lock=lock,
-		traceLen=traceLen, baseline=baseline, baselineLock=baselineLock)
-	a2 = TraceKit.getTraceAvg(dm2, signal=signal, phase=phase, lock=lock,
-		traceLen=traceLen, baseline=baseline, baselineLock=baselineLock)
-	# Get the differenceTrace
-	aDiff = a1[1] - a2[1]
-	minSlope = aStats[:,1]
-	maxSlope = aStats[:,2]
-	minErr = (aDiff-minSlope)/2
-	maxErr = (maxSlope-aDiff)/2
-	minErr = TraceKit.smooth(minErr, windowLen=31)
-	maxErr = TraceKit.smooth(maxErr, windowLen=31)
-	aErr1 = np.array([minErr, maxErr])
-	aErr2 = np.array([maxErr, minErr])
-	return aErr1, aErr2, aDiff
-
-def runStats(dm):
-
-	"""
-	Runs the LMM on the traces.
-
-	Arguments:
-	dm		--	DataMatrix
-	"""
-
-	winSize = 1
-
-	randomEffects = ['subject_nr']
-	fixedEffects = ['saccSide']
-
-	# ***
-	# Horizontal position stats
-	# ***
-	# Select DataMatrices
-	a = TraceKit.mixedModelTrace(dm, fixedEffects, \
-		randomEffects, winSize=winSize, nSim=None, signal='x', \
-		phase='cue', traceLen=preTraceLen, baseline=baseline, \
-		baselineLock='end', lock='end')
-	np.save('stats/%s/x.pre.npy' % exp, a)
-
-	# ***
-	# Pupil stats
-	# ***
-	# Also run the pre-saccade phase for the swap and constant together. To do
-	# this we need to swap the lines for the pre-signal
-
-	fixedEffects = ['saccCol', 'gazeBias']
-
-	_dmSwap = dm.select('cond == "swap"')
-	_dmConstant = dm.select('cond == "constant"')
-	_dmSwap.recode('saccCol', [('white', 'black'), ('black', 'white')])
-	a = lme.mixedModelTrace(_dmSwap + _dmConstant, fixedEffects, \
-		randomEffects, winSize=winSize, nSim=None, signal='pupil', \
-		phase='cue', traceLen=preTraceLen, baseline=baseline, \
-		baselineLock='end', lock='end')
-	np.save('stats/%s/swap.constant.pre.npy' % exp, a)
-	# Now run all the separate phases
-	for cond in ('swap', 'constant', 'onset'):
-		_dm = dm.select('cond == "%s"' % cond)
-		a = TraceKit.mixedModelTrace(_dm, fixedEffects, randomEffects,
-			winSize=winSize, nSim=None, signal='pupil', phase='cue',
-			traceLen=preTraceLen, baseline=baseline, lock='end',
-			baselineLock=baselineLock)
-		np.save('stats/%s/%s.pre.npy' % (exp, cond), a)
-		a = TraceKit.mixedModelTrace(_dm, fixedEffects, randomEffects,
-			winSize=winSize, nSim=None, signal='pupil', phase='postSacc',
-			traceLen=postTraceLen, baseline=baseline, baselineLock=baselineLock)
-		np.save('stats/%s/%s.post.npy' % (exp, cond), a)
-
 def mainPlots(dm):
 
 	"""
@@ -227,7 +131,7 @@ def mainPlots(dm):
 			if cond == 'swap':
 				plt.plot(xPre, blackPre-whitePre, ':', color=col, label= \
 					'inverse swap')
-		plt.xlim(preTraceLen-preShowLen, preTraceLen)
+		plt.xlim(0, preTraceLen)
 
 		# Post difference plot
 		ax = plt.subplot2grid((4,7), (0,1), colspan=6)
@@ -273,9 +177,8 @@ def mainPlots(dm):
 			plt.plot(xPost, whitePost-blackPost, color=col, label=cond,
 				linestyle=style)
 			if cond == 'swap':
-				plt.plot(xPost, blackPost-whitePost, ':', color=col, label= \
-					'inverse swap')
-		plt.xlim(0, postShowLen)
+				plt.plot(xPost, blackPost-whitePost, ':', color=col,
+					label='inverse swap')
 		plt.legend(frameon=False)
 
 		# Main plots
@@ -285,9 +188,6 @@ def mainPlots(dm):
 			__dm = _dm.select('cond == "%s"' % cond, verbose=False)
 			_dmWhite = __dm.select('saccCol == "white"', verbose=False)
 			_dmBlack = __dm.select('saccCol == "black"', verbose=False)
-			if subjectNr == 'all':
-				# Load stats from disk (need to be calculated before by `runStats()`
-				aStatsPre = np.load('stats/%s/%s.pre.npy' % (exp, cond))
 			ax = plt.subplot2grid((4,7), (i,0), colspan=1)
 			ax.spines["right"].set_visible(False)
 			ax.get_yaxis().tick_left()
@@ -296,36 +196,21 @@ def mainPlots(dm):
 			sMin = __dm['flipSDelay'].min()
 			sMax = __dm['flipSDelay'].max()
 			sMean = __dm['flipSDelay'].mean()
-			plt.axvspan(preTraceLen-sMin, preTraceLen-sMax, color=flipSColor, \
+			plt.axvspan(preTraceLen-sMin, preTraceLen-sMax, color=flipSColor,
 				alpha=.1)
 			plt.axvline(preTraceLen-sMean, color=flipSColor,
 			   linestyle=flipSStyle)
+			tracePlot(__dm, traceParamsPre, suffix='.%s.%s.pre' % (cond, \
+				subjectNr), err=True)
 
-			if subjectNr == 'all':
-				TraceKit.markStats(ax, aStatsPre[:,0], minSmp=200, alpha=.01,
-					hiExt=True)
-				aErrWhite, aErrBlack, aDiff = errorTrace(aStatsPre, _dmWhite,
-					_dmBlack, phase='cue')
-			else:
-				aErrWhite, aErrBlack, aDiff = None, None, None
-			plt.ylim(yMin, yMax)
-			TraceKit.plotTraceAvg(ax, _dmWhite, aErr=aErrWhite, signal='pupil',
-				phase='cue', lock='end', traceLen=preTraceLen,
-				baseline=baseline, baselineLock=baselineLock,
-				lineColor=brightColor, errColor=brightColor,
-				lineStyle=brightStyle)
-			TraceKit.plotTraceAvg(ax, _dmBlack, aErr=aErrBlack, signal='pupil',
-				phase='cue', lock='end', traceLen=preTraceLen,
-				baseline=baseline, baselineLock=baselineLock,
-				lineColor=darkColor, errColor=darkColor, lineStyle=darkStyle)
-			plt.xticks(range(150, preTraceLen+1, 150), range(-preTraceLen+150, \
+			plt.xticks(range(150, preTraceLen+1, 150), range(-preTraceLen+150,
 				1, 150))
 			if i < 3:
 				ax.get_xaxis().set_ticklabels([])
 			if cond == 'swap':
 				plt.ylabel('Pupil size (norm.)')
-			#plt.xlim(0, preTraceLen)
-			plt.xlim(preTraceLen-preShowLen, preTraceLen)
+			plt.xlim(0, preTraceLen)
+			plt.ylim(yMin, yMax)
 
 			# Post-saccade
 			ax = plt.subplot2grid((4,7), (i,1), colspan=6)
@@ -333,7 +218,7 @@ def mainPlots(dm):
 			plt.axvline(0, linestyle='--', color='black')
 			ax.axhline(1.0, linestyle='--', color='black')
 			# Title
-			plt.text(0.1, 0.9, cond, horizontalalignment='center', \
+			plt.text(0.1, 0.9, cond, horizontalalignment='center',
 				verticalalignment='center', transform=ax.transAxes)
 			# Draw saccade offsets
 			eMin = -__dm['flipEDelay'].min()
@@ -342,26 +227,10 @@ def mainPlots(dm):
 			plt.axvspan(eMin, eMax, color=flipEColor, \
 				alpha=.1)
 			plt.axvline(eMean, color=flipEColor, linestyle=flipEStyle)
-
-			if subjectNr == 'all':
-				aStatsPost = np.load('stats/%s/%s.post.npy' % (exp, cond))
-				TraceKit.markStats(ax, aStatsPost[:,0], minSmp=200, alpha=.4,
-					loExt=True)
-				aErrWhite, aErrBlack, aDiff = errorTrace(aStatsPost, _dmWhite,
-					_dmBlack, phase='postSacc')
-			else:
-				aErrWhite, aErrBlack, aDiff = None, None, None
+			tracePlot(__dm, traceParamsPost, suffix='.%s.%s.post' % (cond, \
+				subjectNr), err=True)
 			plt.ylim(yMin, yMax)
-			TraceKit.plotTraceAvg(ax, _dmWhite, aErr=aErrWhite, signal='pupil',
-				phase='postSacc', traceLen=postTraceLen, baseline=baseline,
-				lineColor=brightColor, errColor=brightColor, \
-				baselineLock=baselineLock, label='Bright',
-				lineStyle=brightStyle)
-			TraceKit.plotTraceAvg(ax, _dmBlack, aErr=aErrBlack, signal='pupil',
-				phase='postSacc', traceLen=postTraceLen, baseline=baseline,
-				lineColor=darkColor, errColor=darkColor, \
-				baselineLock=baselineLock, label='Dark', lineStyle=darkStyle)
-			plt.xlim(0,postTraceLen)
+			plt.xlim(0, postTraceLen)
 			if i == 3:
 				plt.xlabel('Time after saccade (ms)')
 			if i < 3:
@@ -369,13 +238,77 @@ def mainPlots(dm):
 			plt.xticks(range(150, postTraceLen, 150))
 			ax.get_yaxis().tick_right()
 			ax.get_yaxis().set_ticklabels([])
-
 			if cond == 'constant':
 				plt.legend(frameon=False, loc='lower left')
-			plt.xlim(0, postShowLen)
 			i += 1
 
-		saveFig('main.subject.%s' % subjectNr, show=False)
+		saveFig('main.subject.%s' % subjectNr, show=True)
+
+@cachedArray
+def lmeTrace(dm, traceParams, suffix=''):
+
+	"""
+	desc: |
+		Performs the lme analysis for the cueLum Bright vs Dark contrast.
+
+	arguments:
+		dm:				A DataMatrix.
+		traceParams:	The trace parameters.
+
+	keywords:
+		suffix:			A suffix to identify the trace.
+
+	returns: |
+		A 2D array where the columns are [p, ciHi, ciLo] and the rows are the
+		samples.
+	"""
+
+	_dm = dm.selectColumns(['saccCol', 'subject_nr', '__trace_postSacc__',
+		'__trace_cue__', '__trace_baseline__'])
+	a = TraceKit.mixedModelTrace(_dm, traceModel, winSize=winSize,
+		**traceParams)
+	return a
+
+def tracePlot(dm, traceParams, suffix='', err=True):
+
+	"""
+	desc: |
+		A pupil-trace plot for a single epoch.
+
+	arguments:
+		dm:				A DataMatrix.
+		traceParams:	The trace parameters.
+
+	keywords:
+		suffix:			A suffix to identify the trace.
+		err:			Indicates whether error bars should be drawn.
+	"""
+
+	x1, y1, err1 = TraceKit.getTraceAvg(dm.select('saccCol == "white"'),
+		**traceParams)
+	x2, y2, err2 = TraceKit.getTraceAvg(dm.select('saccCol == "black"'),
+		**traceParams)
+	if err:
+		d = y1-y2
+		aErr = lmeTrace(dm, traceParams=traceParams, suffix=suffix,
+			cacheId='lmeTrace%s' % suffix)
+		aT = aErr[:,0]
+		aLo = aErr[:,2]
+		aHi = aErr[:,1]
+		minErr = (d-aLo)/2
+		maxErr = (aHi-d)/2
+		y1min = y1 - minErr
+		y1max = y1 + maxErr
+		y2min = y2 - minErr
+		y2max = y2 + maxErr
+		plt.fill_between(x1, y1min, y1max, color=brightColor, label='Bright')
+		plt.fill_between(x2, y2min, y2max, color=darkColor, label='Dark')
+		TraceKit.markStats(plt.gca(), np.abs(aT), below=False, thr=2,
+			minSmp=200, loExt=True, hiExt=True)
+		plt.plot(x1, d, color='green')
+	else:
+		plt.plot(x1, y1, color=brightColor, label='Bright')
+		plt.plot(x2, y2, color=darkColor, label='Dark')
 
 def posTracePlots(dm, signal='x'):
 
