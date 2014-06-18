@@ -23,9 +23,12 @@ from exparser.DataMatrix import DataMatrix
 from analysis import helpers, fitting
 from exparser import Cache, Tools
 
+exp = None
 for a in sys.argv:
 	if 'exp1' in a:
 		exp = a
+if exp == None:
+	raise Exception('Please specify exp1 or exp1.antiBias')
 
 if 'exp1.antiBias' in sys.argv and '@matchBias' not in sys.argv and \
 	'@matchBias:redo' not in sys.argv:

@@ -68,25 +68,38 @@ def filter(dm):
 		dm['saccDur'].std())
 	return dm
 
-def mainPlots(dm):
+def mainPlots(dm, perSubject=False):
 
 	"""
-	Generates the main plots
+	desc: |
+		Generates the main plots, consisting of four panes (difference,
+		Constant, Swap, Onset)
 
-	Arguments:
-	dm		--	DataMatrix
+	arguments:
+		dm:				DataMatrix
+
+	keywords:
+		perSubject:
+			desc: |
+				Indicates whether a single grand mean plot should be
+				generated (False) or individual plots per subject
+				(True).
+			type:
+				bool
 	"""
 
-	for subjectNr in ['all']: # + dm.unique('subject_nr'):
-		print baseline, subjectNr
+	if perSubject:
+		subjectList = dm.unique('subject_nr')
+	else:
+		subjectList = ['all']
+	for subjectNr in subjectList:
+		print('Generating main plots for subject: %s' % subjectNr)
 		if subjectNr == 'all':
 			_dm = dm
 		else:
 			_dm = dm.select('subject_nr == %d' % subjectNr, verbose=False)
-
 		fig = newFig(size=big)
 		plt.subplots_adjust(wspace=0, hspace=0)
-
 		# Pre difference plot
 		ax = plt.subplot2grid((4,7), (0,0), colspan=1)
 		plt.ylabel('Pupil-size diff (norm.)')
@@ -94,8 +107,7 @@ def mainPlots(dm):
 		ax.spines["right"].set_visible(False)
 		ax.get_yaxis().tick_left()
 		ax.axhline(0, linestyle='--', color='black')
-		plt.xticks(range(150, preTraceLen+1, 150), range(-preTraceLen+150, \
-			1, 150))
+		plt.xticks([25], [-150])
 		plt.yticks([.0, -.2, -.4])
 		#ax.get_xaxis().set_ticklabels([])
 		plt.xlim(0, preTraceLen)
@@ -132,7 +144,6 @@ def mainPlots(dm):
 				plt.plot(xPre, blackPre-whitePre, ':', color=col, label= \
 					'inverse swap')
 		plt.xlim(0, preTraceLen)
-
 		# Post difference plot
 		ax = plt.subplot2grid((4,7), (0,1), colspan=6)
 		plt.ylim(-.5, .2)
@@ -140,7 +151,7 @@ def mainPlots(dm):
 		plt.axvline(0, linestyle='--', color='black')
 		ax.axhline(0, linestyle='--', color='black')
 		plt.xlim(0, postTraceLen)
-		plt.xticks(range(150, postTraceLen, 150))
+		plt.xticks(range(0, postTraceLen, 150))
 		#ax.get_yaxis().tick_right()
 		ax.get_yaxis().set_ticklabels([])
 		# Title
@@ -202,9 +213,8 @@ def mainPlots(dm):
 			   linestyle=flipSStyle)
 			tracePlot(__dm, traceParamsPre, suffix='.%s.%s.pre' % (cond, \
 				subjectNr), err=True)
+			plt.xticks([25], [-150])
 
-			plt.xticks(range(150, preTraceLen+1, 150), range(-preTraceLen+150,
-				1, 150))
 			if i < 3:
 				ax.get_xaxis().set_ticklabels([])
 			if cond == 'swap':
@@ -235,7 +245,7 @@ def mainPlots(dm):
 				plt.xlabel('Time after saccade (ms)')
 			if i < 3:
 				ax.get_xaxis().set_ticklabels([])
-			plt.xticks(range(150, postTraceLen, 150))
+			plt.xticks(range(0, postTraceLen, 150))
 			ax.get_yaxis().tick_right()
 			ax.get_yaxis().set_ticklabels([])
 			if cond == 'constant':
@@ -291,7 +301,7 @@ def tracePlot(dm, traceParams, suffix='', err=True):
 	if err:
 		d = y1-y2
 		aErr = lmeTrace(dm, traceParams=traceParams, suffix=suffix,
-			cacheId='lmeTrace%s' % suffix)
+			cacheId='lmeTrace.%s%s' % (exp, suffix))
 		aT = aErr[:,0]
 		aLo = aErr[:,2]
 		aHi = aErr[:,1]
@@ -716,7 +726,7 @@ def fixationStability(dm, offset=50):
 			dm['fixStabX'][i] = np.std(a)
 		print 'Done'
 		return dm
-	dm = addFixStabInfo(dm, offset, cacheId='fixStabInfo.%d' % offset)
+	dm = addFixStabInfo(dm, offset, cacheId='fixStabInfo.%s.%d' % (exp, offset))
 
 	cm = dm.collapse(['cond', 'subject_nr'], 'fixStabX')
 	R().load(cm)

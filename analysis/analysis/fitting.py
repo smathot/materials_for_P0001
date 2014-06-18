@@ -97,11 +97,11 @@ def fitSwap(dm, suffix='all', baseline=False):
 
 
 	dmSwap = dm.select('cond == "swap"', verbose=False)
-	ySwap = getDiffTrace(dmSwap, cacheId='swapDiff%s' % suffix)
+	ySwap = getDiffTrace(dmSwap, cacheId='swapDiff%s.%s' % (exp, suffix))
 	dmOnset = dm.select('cond == "onset"', verbose=False)
-	yOnset = getDiffTrace(dmOnset, cacheId='onsetDiff%s' % suffix)
+	yOnset = getDiffTrace(dmOnset, cacheId='onsetDiff%s.%s' % (exp, suffix))
 	dmConst= dm.select('cond == "constant"', verbose=False)
-	yConst = getDiffTrace(dmConst, cacheId='constDiff%s' % suffix)
+	yConst = getDiffTrace(dmConst, cacheId='constDiff%s.%s' % (exp, suffix))
 	lP = []
 	lErr = []
 	for i in np.arange(1000):
