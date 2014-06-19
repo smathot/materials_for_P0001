@@ -77,13 +77,17 @@ def getDiffTrace(dm):
 	return yWhite
 
 
-def fitSwap(dm, suffix='all', baseline=False):
+def fitSwap(dm, suffix='all'):
 
-	"""desc: |
-	Description.
+	"""
+	desc: |
+		Performs a mixture-model of the swap condition.
+
+	arguments:
+		dm:			A DataMatrix,
 
 	keywords:
-		all:
+		suffix:
 			desc:	A suffix.
 			type:	[str, unicode]
 
@@ -92,7 +96,8 @@ def fitSwap(dm, suffix='all', baseline=False):
 			- None if suffix is 'all'
 			- Otherwise An (i1, i2) tuple indicating the end of the preparation
 			  period and the start of the non-preparation period.
-		type:		[tuple, None]
+		type:
+			[tuple, None]
 	"""
 
 
@@ -110,9 +115,9 @@ def fitSwap(dm, suffix='all', baseline=False):
 		y3 = ySwap[i]
 		pBest = None
 		errBest = None
-		for p in np.linspace(0, 1, 100):
+		for p in np.linspace(0, 1, 1000):
 			y3est = p*-y1 + (1-p)*y2
-			err = (y3est-y3)**2
+			err = abs(y3est-y3)
 			if errBest == None or err < errBest:
 				errBest = err
 				pBest = p
@@ -124,8 +129,8 @@ def fitSwap(dm, suffix='all', baseline=False):
 	plt.axhline(0, linestyle=':', color='black')
 	plt.axhline(1, linestyle=':', color='black')
 	plt.yticks(np.linspace(0,1,6))
-	plt.ylabel('Preparation')
-	plt.xlabel('Time relative to change (ms)')
+	plt.ylabel('Preparation index')
+	plt.xlabel('Time relative to display change (ms)')
 	if suffix == 'all':
 		# Values hard-coded based on fitSwapAll() output
 		plt.axvspan(352.50-1.96*13.22, 352.50+1.96*13.22, color=brown[1],
@@ -150,8 +155,9 @@ def fitSwap(dm, suffix='all', baseline=False):
 
 def fitSwapAll(dm):
 
-	"""desc: |
-	Performs the fitSwap() procedure for all participants separately.
+	"""
+	desc: |
+		Performs the fitSwap() procedure for all participants separately.
 	"""
 
 	l1 = []
