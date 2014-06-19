@@ -18,6 +18,8 @@ authornote: |
  Manuscript type: Observation
 
  Main-text word count: %-- python: "from academicmarkdown import tools; print tools.wordCount(['md/introduction.md', 'md/methods.md', 'md/results.md', 'md/discussion.md'])" --%
+
+ References: %rc%
 ---
 
 # Abstract
@@ -41,4 +43,3 @@ authornote: |
 # Discussion
 
 %-- include: "md/discussion.md" --%
-
