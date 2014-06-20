@@ -47,7 +47,7 @@ In the Swap condition, the preparatory component of the PLR is pitted against th
 
 	Swap(t) = p(t) * -1 * Constant(t) + (1-p(t)) * Onset(t)
 
-Here, `t` is time since display change, `Swap(t)`, `Constant(t)`, and `Onset(t)` are the difference in pupil size between Land-on-Bright and Land-on-Dark trials at time `t` in respectively the Swap, Constant, and Onset conditions. Finally, `p(t)` is the 'preparation index' at time `t`, which reflects whether the Swap condition is best predicted by the Constant condition (p > .5) or by the Onset condition (p < .5).
+Here, `t` is time since display change, `Swap(t)`, `Constant(t)`, and `Onset(t)` are the difference in pupil size between Land-on-Bright and Land-on-Dark trials at time `t` in respectively the Swap, Constant, and Onset conditions. Finally, `p(t)` is the 'preparation index' at time `t`, and reflects whether the Swap condition is best predicted by the Constant condition (p > .5) or by the Onset condition (p < .5).
 
 For every participant separately, we determined the point `t` at which `p(t)` dropped below .5 for at least 200 consecutive samples. This showed that the cross-over from a (predominantly) preparatory response to a (predominantly) regular response occurred 354 ms (SE = 14.7) after display change (see %FigSwapMixture).
 
