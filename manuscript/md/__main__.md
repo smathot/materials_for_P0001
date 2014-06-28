@@ -15,7 +15,7 @@ correspondence:
 authornote: |
  SM, JG, and FV were supported by ERC grant 230313 (<http://erc.europa.eu/>). LvdL was supported by a grant ('allocation de recherche') from the French ministry of research (2012–2015). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript. The authors declare no competing financial interests.
 
- Manuscript type: Observation
+ Manuscript type: Report
 
  Main-text word count: %-- python: "from academicmarkdown import tools; print tools.wordCount(['md/introduction.md', 'md/methods.md', 'md/results.md', 'md/discussion.md'])" --%
 
