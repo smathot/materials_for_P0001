@@ -68,7 +68,20 @@ def filter(dm):
 		dm['saccDur'].std())
 	return dm
 
-def mainPlots(dm, perSubject=False):
+
+def mainPlotsZoom(dm):
+
+	"""
+	Similar to the main plots, but zooms in on the peri-saccadic interval.
+
+	arguments:
+		dm:		A DataMatrix.
+	"""
+
+	mainPlots(dm, suffix='.zoom', zoom=True)
+
+
+def mainPlots(dm, perSubject=False, suffix='', zoom=False):
 
 	"""
 	desc: |
@@ -81,11 +94,16 @@ def mainPlots(dm, perSubject=False):
 	keywords:
 		perSubject:
 			desc: |
-				Indicates whether a single grand mean plot should be
-				generated (False) or individual plots per subject
-				(True).
-			type:
-				bool
+					Indicates whether a single grand mean plot should be
+					generated (False) or individual plots per subject
+					(True).
+			type:	bool
+		suffix:
+			desc:	A suffix for the plot filename.
+			type:	[str, unicode]
+		zoom:
+			desc:	Indicates whether we should generate a zoom plot.
+			type:	bool
 	"""
 
 	if perSubject:
@@ -98,19 +116,30 @@ def mainPlots(dm, perSubject=False):
 			_dm = dm
 		else:
 			_dm = dm.select('subject_nr == %d' % subjectNr, verbose=False)
-		fig = newFig(size=big)
+		if zoom:
+			fig = newFig(size=(2,5))
+		else:
+			fig = newFig(size=big)
 		plt.subplots_adjust(wspace=0, hspace=0)
 		# Pre difference plot
-		ax = plt.subplot2grid((4,7), (0,0), colspan=1)
+		if zoom:
+			ax = plt.subplot2grid((4,2), (0,0), colspan=1)
+		else:
+			ax = plt.subplot2grid((4,7), (0,0), colspan=1)
 		plt.ylabel('Pupil-size diff (norm.)')
-		plt.ylim(-.5, .2)
+		if zoom:
+			plt.ylim(-.03, .01)
+			plt.yticks([-.02, -.01, 0])
+			plt.xticks([preTraceLen-25], [-25])
+			plt.xlim(preTraceLen-50, preTraceLen)
+		else:
+			plt.ylim(-.5, .2)
+			plt.yticks([.0, -.2, -.4])
+			plt.xticks([25], [-150])
+			plt.xlim(0, preTraceLen)
 		ax.spines["right"].set_visible(False)
 		ax.get_yaxis().tick_left()
 		ax.axhline(0, linestyle='--', color='black')
-		plt.xticks([25], [-150])
-		plt.yticks([.0, -.2, -.4])
-		#ax.get_xaxis().set_ticklabels([])
-		plt.xlim(0, preTraceLen)
 		# Draw saccade onsets
 		sMin = _dm['flipSDelay'].min()
 		sMax = _dm['flipSDelay'].max()
@@ -143,16 +172,24 @@ def mainPlots(dm, perSubject=False):
 			if cond == 'swap':
 				plt.plot(xPre, blackPre-whitePre, ':', color=col, label= \
 					'inverse swap')
-		plt.xlim(0, preTraceLen)
 		# Post difference plot
-		ax = plt.subplot2grid((4,7), (0,1), colspan=6)
-		plt.ylim(-.5, .2)
+		if zoom:
+			ax = plt.subplot2grid((4,2), (0,1), colspan=6)
+		else:
+			ax = plt.subplot2grid((4,7), (0,1), colspan=6)
 		ax.spines["left"].set_visible(False)
 		plt.axvline(0, linestyle='--', color='black')
+		if zoom:
+			plt.ylim(-.03, .01)
+			plt.yticks([-.02, -.01, 0])
+			plt.xticks([0, 25])
+			plt.xlim(0, 50)
+		else:
+			plt.ylim(-.5, .2)
+			plt.yticks([.0, -.2, -.4])
+			plt.xlim(0, postTraceLen)
+			plt.xticks(range(0, postTraceLen, 150))
 		ax.axhline(0, linestyle='--', color='black')
-		plt.xlim(0, postTraceLen)
-		plt.xticks(range(0, postTraceLen, 150))
-		#ax.get_yaxis().tick_right()
 		ax.get_yaxis().set_ticklabels([])
 		# Title
 		plt.text(0.1, 0.9, 'Difference', horizontalalignment='center', \
@@ -199,7 +236,10 @@ def mainPlots(dm, perSubject=False):
 			__dm = _dm.select('cond == "%s"' % cond, verbose=False)
 			_dmWhite = __dm.select('saccCol == "white"', verbose=False)
 			_dmBlack = __dm.select('saccCol == "black"', verbose=False)
-			ax = plt.subplot2grid((4,7), (i,0), colspan=1)
+			if zoom:
+				ax = plt.subplot2grid((4,2), (i,0), colspan=1)
+			else:
+				ax = plt.subplot2grid((4,7), (i,0), colspan=1)
 			ax.spines["right"].set_visible(False)
 			ax.get_yaxis().tick_left()
 			ax.axhline(1.0, linestyle='--', color='black')
@@ -214,16 +254,23 @@ def mainPlots(dm, perSubject=False):
 			tracePlot(__dm, traceParamsPre, suffix='.%s.%s.pre' % (cond, \
 				subjectNr), err=True)
 			plt.xticks([25], [-150])
-
 			if i < 3:
 				ax.get_xaxis().set_ticklabels([])
 			if cond == 'swap':
 				plt.ylabel('Pupil size (norm.)')
-			plt.xlim(0, preTraceLen)
-			plt.ylim(yMin, yMax)
-
+			if zoom:
+				plt.xlim(preTraceLen-50, preTraceLen)
+				plt.ylim(.99, 1.05)
+				plt.xticks([preTraceLen-25], [-25])
+			else:
+				plt.xlim(0, preTraceLen)
+				plt.ylim(yMin, yMax)
+				plt.xticks([25], [-150])
 			# Post-saccade
-			ax = plt.subplot2grid((4,7), (i,1), colspan=6)
+			if zoom:
+				ax = plt.subplot2grid((4,2), (i,1), colspan=6)
+			else:
+				ax = plt.subplot2grid((4,7), (i,1), colspan=6)
 			ax.spines["left"].set_visible(False)
 			plt.axvline(0, linestyle='--', color='black')
 			ax.axhline(1.0, linestyle='--', color='black')
@@ -239,20 +286,24 @@ def mainPlots(dm, perSubject=False):
 			plt.axvline(eMean, color=flipEColor, linestyle=flipEStyle)
 			tracePlot(__dm, traceParamsPost, suffix='.%s.%s.post' % (cond, \
 				subjectNr), err=True)
-			plt.ylim(yMin, yMax)
-			plt.xlim(0, postTraceLen)
+			if zoom:
+				plt.xlim(0, 50)
+				plt.ylim(.99, 1.05)
+				plt.xticks([0, 25])
+			else:
+				plt.xlim(0, postTraceLen)
+				plt.ylim(yMin, yMax)
+				plt.xticks(range(0, postTraceLen, 150))
 			if i == 3:
 				plt.xlabel('Time after saccade (ms)')
 			if i < 3:
 				ax.get_xaxis().set_ticklabels([])
-			plt.xticks(range(0, postTraceLen, 150))
 			ax.get_yaxis().tick_right()
 			ax.get_yaxis().set_ticklabels([])
 			if cond == 'constant':
 				plt.legend(frameon=False, loc='lower left')
 			i += 1
-
-		saveFig('main.subject.%s' % subjectNr, show=True)
+		saveFig('main.subject.%s%s' % (subjectNr, suffix), show=True)
 
 @cachedArray
 def lmeTrace(dm, traceParams, suffix=''):
