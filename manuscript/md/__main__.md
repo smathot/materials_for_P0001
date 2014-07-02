@@ -36,6 +36,8 @@ authornote: |
 
 %-- include: "md/methods.md" --%
 
+<br />
+
 # Results
 
 %-- include: "md/results.md" --%
