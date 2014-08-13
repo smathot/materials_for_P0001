@@ -1,7 +1,6 @@
 ## Participants, software, and apparatus
 
-Eight observers (six naive participants and two authors; seven women; age range 20-30 years) participated in the experiment. Participants provided written informed consent. The experiment was conducted with approval of the *Comité d'Ethique de l'Université de Provence* (currently Aix-Marseille University). The right eye was recorded with an EyeLink 1000 (SR Research, Mississauga, Canada, ON), a video-based eye tracker sampling at 1000 Hz. Stimuli were presented on a 21" ViewSonic pf227f CRT monitor (1024 x 768 px, 100 Hz) with OpenSesame [@MathSchreij2012] using the PsychoPy [@Peirce2007] back-end. Data, materials, and supplementary analyses are available from
-<https://github.com/smathot/materials_for_P0001>.
+Eight observers (six naive participants and two authors; seven women; age range 20-30 years) participated in the experiment. Participants provided written informed consent. The experiment was conducted with approval of the *Comité d'Ethique de l'Université de Provence* (currently Aix-Marseille University). The right eye was recorded with an EyeLink 1000 (SR Research, Mississauga, Canada, ON), a video-based eye tracker sampling at 1000 Hz. Stimuli were presented on a 21" ViewSonic pf227f CRT monitor (1024 x 768 px, 100 Hz) with OpenSesame [@MathSchreij2012] using the PsychoPy [@Peirce2007] back-end. ++An on-line supplement with additional analyses is available from the publisher's website. Data, experimental scripts, and analysis scripts are available from <https://github.com/smathot/materials_for_P0001>.++
 
 ## Stimuli and procedure
 
